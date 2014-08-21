@@ -76,5 +76,5 @@ class cancerberoController extends BaseController {
 		return DB::table(Config::get('cancerbero::modulopermisos.tabla'))
 			->select(Config::get('cancerbero::modulopermisos.moduloid').' AS moduloid', Config::get('cancerbero::modulopermisos.permisoid').' AS permisoid')
 			->get();
-	}	
+	}
 }
