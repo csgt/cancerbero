@@ -1,11 +1,19 @@
 <?php 
 
 namespace Csgt\Cancerbero;
-use Config, View, Response, DB, Auth;
+use Config, View, Response, DB, Auth, Redirect;
 
 class Cancerbero {
 
-	public function tienePermisos($aRuta) {
+	public function tienePermisos($aRuta, $aRedirect=true) {
+		
+		if (Auth::guest()){
+			if($aRedirect)
+				return Redirect::guest(Config::get('cancerbero::rutalogin'));
+			else
+				return null;
+		} 
+
 		$arr     = explode('.', $aRuta);
 		$modulo  = 'index';
 		$permiso = 'index';
@@ -54,5 +62,24 @@ class Cancerbero {
 		$response['error']  = '';
 		$response['acceso'] = true;
 		return Response::json($response);
-	}	
+	}
+
+	public function tienePermisosCrud($aModulo) {
+		$addjson = $this->tienePermisos($aModulo.'.create', false);
+		if($addjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
+		$add     = $addjson->getData();
+		$add     = $add->acceso;
+
+		$editjson = $this->tienePermisos($aModulo.'.edit', false);
+		if($editjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
+		$edit     = $editjson->getData();
+		$edit     = $edit->acceso;
+
+		$deletejson = $this->tienePermisos($aModulo.'.destroy', false);
+		if($deletejson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
+		$delete     = $deletejson->getData();
+		$delete     = $delete->acceso;
+
+		return array('add'=>$add, 'edit'=>$edit, 'delete'=>$delete);
+	}
 }
