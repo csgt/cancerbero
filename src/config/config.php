@@ -39,15 +39,19 @@ return array(
 		'rolid'           => 'rolid' 
 	),
 
-	'modulosocultos'  => array('cancerbero'),
+	//'modulosocultos'  => array('cancerbero'),
 	
-	'permisosocultos' => array('asignar', 'guardarpermisos', 'modulopermisos', 'guardarmodulopermisos'),
+	//'permisosocultos' => array('asignar', 'guardarpermisos', 'modulopermisos', 'guardarmodulopermisos'),
 	
 	'rolbackdoor'     => 1,
 
 	'mensajemodulopermisoexitoso' => 'Se han actualizado los permisos para los m&oacute;dulos exitosamente.',
 
-	'rutalogin' => 'login', 
+	'mensajerolmodulopermisoexitoso' => 'Se han actualizado los permisos para el rol exitosamente.',
+
+	'rutalogin' => 'login',
+
+	'rutaroles' => 'roles', 
 
 	'errorenrutas' => 'Se ha producido un error con tus rutas. &iquest;Todas tus rutas tienen nombre?',
 

@@ -1,6 +1,6 @@
 <?php namespace Csgt\Cancerbero;
 
-use BaseController, View, Auth, Redirect, Config, Input, DB;
+use BaseController, View, Auth, Redirect, Config, Input, DB, Crypt;
 
 class cancerberoController extends BaseController {
 
@@ -69,6 +69,66 @@ class cancerberoController extends BaseController {
 
 		return Redirect::to('cancerbero/modulopermisos')
 			->with('flashMessage', Config::get('cancerbero::mensajemodulopermisoexitoso'))
+			->with('flashType', 'success');
+	}
+
+	public function asignar($id) {
+		$modulopermisosarray = array();
+		$modulopermisos = DB::table(Config::get('cancerbero::modulopermisos.tabla').' AS modulopermisos')
+			->select(Config::get('cancerbero::modulopermisos.id'),
+				'modulos.'.Config::get('cancerbero::modulos.id'),
+				'modulos.'.Config::get('cancerbero::modulos.descripcion').' AS descripcion',
+				DB::raw('IF(modulos.'.Config::get('cancerbero::modulos.nombrefriendly').'="",modulos.'.Config::get('cancerbero::modulos.nombre').',modulos.'.Config::get('cancerbero::modulos.nombrefriendly').') AS modulo'),
+				DB::raw('IF(permisos.'.Config::get('cancerbero::permisos.nombrefriendly').'="",permisos.'.Config::get('cancerbero::permisos.nombre').',permisos.'.Config::get('cancerbero::permisos.nombrefriendly').') AS permiso'))
+			->leftJoin(Config::get('cancerbero::modulos.tabla').' AS modulos', 'modulopermisos.'.Config::get('cancerbero::modulopermisos.moduloid'), '=', 'modulos.'.Config::get('cancerbero::modulos.id'))
+			->leftJoin(Config::get('cancerbero::permisos.tabla').' AS permisos', 'modulopermisos.'.Config::get('cancerbero::modulopermisos.permisoid'), '=', 'permisos.'.Config::get('cancerbero::permisos.id'))
+			->orderBy('modulo')
+			->orderBy('permiso')
+			->get();
+
+		$moduloatual = '';
+		foreach($modulopermisos as $mp){
+			if($mp->modulo <> $moduloatual) $i = 0;
+			$modulopermisosarray[$mp->modulo]['descripcion']            = $mp->descripcion;
+			$modulopermisosarray[$mp->modulo]['moduloid']               = $mp->moduloid;
+			$modulopermisosarray[$mp->modulo]['permisos'][$i]['id']     = $mp->modulopermisoid;
+			$modulopermisosarray[$mp->modulo]['permisos'][$i]['nombre'] = $mp->permiso;
+			$moduloatual                                                = $mp->modulo;
+			$i++;
+		}
+
+		$rolmodulopermisosarray = array();
+		$rolmodulopermisos = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla'))
+			->select(Config::get('cancerbero::rolmodulopermisos.modulopermisoid').' AS modulopermiso')
+			->where(Config::get('cancerbero::rolmodulopermisos.rolid'), $id)
+			->get();
+
+		foreach($rolmodulopermisos as $rmp)
+			$rolmodulopermisosarray[] = $rmp->modulopermiso;
+
+		return View::make('cancerbero::rolmodulopermisos')
+			->with('rolid', Crypt::encrypt($id))
+			->with('modulopermisos', $modulopermisosarray)
+			->with('rolmodulopermisos', $rolmodulopermisosarray);
+	}
+
+	public function asignarstore() {
+		$rolid = Crypt::decrypt(Input::get('id'));
+		$modulopermisos = Input::get('modulopermisos');
+
+		DB::table(Config::get('cancerbero::rolmodulopermisos.tabla'))
+			->where(Config::get('cancerbero::rolmodulopermisos.rolid'), $rolid)
+			->delete();
+
+		foreach($modulopermisos as $modulopermiso){
+			$rmp  = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla'))
+				->insert(array(
+					Config::get('cancerbero::rolmodulopermisos.rolid')           => $rolid,
+					Config::get('cancerbero::rolmodulopermisos.modulopermisoid') => $modulopermiso));
+		}
+
+		return Redirect::to(Config::get('cancerbero::rutaroles'))
+			->with('flashMessage', Config::get('cancerbero::mensajerolmodulopermisoexitoso'))
 			->with('flashType', 'success');
 	}
 
