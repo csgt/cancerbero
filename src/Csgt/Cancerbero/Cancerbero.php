@@ -82,4 +82,16 @@ class Cancerbero {
 
 		return array('add'=>$add, 'edit'=>$edit, 'delete'=>$delete);
 	}
+
+	public function isGod() {
+		$rolid = Config::get('cancerbero::roles.id');
+		if(Auth::user()->$rolid == Config::get('cancerbero::rolbackdoor'))
+			return true;
+		else
+			return false;
+	}
+
+	public function getGodRol() {
+		return Config::get('cancerbero::rolbackdoor');
+	}
 }
