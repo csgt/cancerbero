@@ -57,4 +57,6 @@ return array(
 
 	'accesodenegado' => 'No tienes permisos para ejecutar esta acci&oacute;n. Favor contactar al administrador.',
 
+	'idencriptado' => true,
+
 );

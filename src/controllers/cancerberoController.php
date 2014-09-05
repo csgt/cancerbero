@@ -73,6 +73,9 @@ class cancerberoController extends BaseController {
 	}
 
 	public function asignar($id) {
+		if(Config::get('cancerbero::idencriptado'))
+			$id = Crypt::decrypt($id);
+
 		$modulopermisosarray = array();
 		$modulopermisos = DB::table(Config::get('cancerbero::modulopermisos.tabla').' AS modulopermisos')
 			->select(Config::get('cancerbero::modulopermisos.id'),
