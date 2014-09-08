@@ -43,7 +43,7 @@ return array(
 	
 	//'permisosocultos' => array('asignar', 'guardarpermisos', 'modulopermisos', 'guardarmodulopermisos'),
 	
-	'rolbackdoor'     => 2,
+	'rolbackdoor'     => 1,
 
 	'mensajemodulopermisoexitoso' => 'Se han actualizado los permisos para los m&oacute;dulos exitosamente.',
 
