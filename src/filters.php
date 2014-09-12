@@ -11,6 +11,6 @@ Route::filter('cancerbero', function() {
     $result     = $resultjson->getData();
   
     if(!$result->acceso)
-      return View::make('cancerbero::error')->with('mensaje', $result->error . ' (' . Route::currentRouteName() . ')');
+      return View::make('cancerbero::error')->with('mensaje', 'No tiene permiso para este módulo (' . Route::currentRouteName() . ')');
   }
 });
