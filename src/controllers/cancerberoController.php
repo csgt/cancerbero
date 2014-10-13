@@ -90,6 +90,7 @@ class cancerberoController extends BaseController {
 			->get();
 
 		$moduloatual = '';
+		$i = 0;
 		foreach($modulopermisos as $mp){
 			if($mp->modulo <> $moduloatual) $i = 0;
 			$modulopermisosarray[$mp->modulo]['descripcion']            = $mp->descripcion;
