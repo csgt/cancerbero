@@ -15,7 +15,8 @@ class cancerberoController extends BaseController {
 
 		$permisos = DB::table(Config::get('cancerbero::permisos.tabla'))
 				->select(Config::get('cancerbero::permisos.id').' AS permisoid', 
-						DB::raw('IF('.Config::get('cancerbero::permisos.nombrefriendly').'="",'.Config::get('cancerbero::permisos.nombre').','.Config::get('cancerbero::permisos.nombrefriendly').') AS permiso')); 
+						Config::get('cancerbero::permisos.nombrefriendly') . ' AS permiso',
+						Config::get('cancerbero::permisos.nombre') .' AS alias'); 
 
 		if($rolusuario != Config::get('cancerbero::rolbackdoor')){
 			$modulos->whereNotIn(Config::get('cancerbero::modulos.nombre'), Config::get('cancerbero::modulosocultos'));
