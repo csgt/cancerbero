@@ -57,7 +57,7 @@ class cancerberoController extends BaseController {
 			$mp  = DB::table(Config::get('cancerbero::modulopermisos.tabla'))
 				->insert(array(
 					Config::get('cancerbero::modulos.id')  => $arr[0],
-					Config::get('cancerbero::permisos.id') => $arr[1]),
+					Config::get('cancerbero::permisos.id') => $arr[1],
 					'created_at'=> date_create(),
 					'updated_at'=> date_create());
 		}
