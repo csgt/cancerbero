@@ -5,7 +5,7 @@ use Config, View, Response, DB, Auth, Redirect;
 
 class Cancerbero {
 
-	public function tienePermisos($aRuta, $aRedirect=true) {
+	public static function tienePermisos($aRuta, $aRedirect=true) {
 		
 		if (Auth::guest()){
 			if($aRedirect)
@@ -64,18 +64,18 @@ class Cancerbero {
 		return Response::json($response);
 	}
 
-	public function tienePermisosCrud($aModulo) {
-		$addjson = $this->tienePermisos($aModulo.'.create', false);
+	public static function tienePermisosCrud($aModulo) {
+		$addjson = self::tienePermisos($aModulo.'.create', false);
 		if($addjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
 		$add     = $addjson->getData();
 		$add     = $add->acceso;
 
-		$editjson = $this->tienePermisos($aModulo.'.edit', false);
+		$editjson = self::tienePermisos($aModulo.'.edit', false);
 		if($editjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
 		$edit     = $editjson->getData();
 		$edit     = $edit->acceso;
 
-		$deletejson = $this->tienePermisos($aModulo.'.destroy', false);
+		$deletejson = self::tienePermisos($aModulo.'.destroy', false);
 		if($deletejson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
 		$delete     = $deletejson->getData();
 		$delete     = $delete->acceso;
@@ -83,7 +83,7 @@ class Cancerbero {
 		return array('add'=>$add, 'edit'=>$edit, 'delete'=>$delete);
 	}
 
-	public function isGod() {
+	public static function isGod() {
 		$rolid = Config::get('cancerbero::roles.id');
 		if(Auth::user()->$rolid == Config::get('cancerbero::rolbackdoor'))
 			return true;
@@ -91,7 +91,7 @@ class Cancerbero {
 			return false;
 	}
 
-	public function getGodRol() {
+	public static function getGodRol() {
 		return Config::get('cancerbero::rolbackdoor');
 	}
 }

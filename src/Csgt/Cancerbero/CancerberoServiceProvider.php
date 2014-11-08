@@ -25,24 +25,14 @@ class CancerberoServiceProvider extends ServiceProvider {
     include __DIR__.'/../../filters.php';
 	}
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		//
+	public function register() {
+		$this->app['cancerbero'] = $this->app->share(function($app) {
+    	return new Cancerbero;
+  	});
 	}
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return array();
+	public function provides() {
+		return array('cancerbero');
 	}
 
 }
