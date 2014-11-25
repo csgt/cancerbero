@@ -11,7 +11,7 @@ class cancerberoController extends BaseController {
 		$modulos = DB::table(Config::get('cancerbero::modulos.tabla'))
 				->select(Config::get('cancerbero::modulos.id').' AS moduloid', 
 						DB::raw('IF('.Config::get('cancerbero::modulos.nombrefriendly').'="",'.Config::get('cancerbero::modulos.nombre').','.Config::get('cancerbero::modulos.nombrefriendly').') AS modulo'), 
-						Config::get('cancerbero::modulos.descripcion').' AS descripcion');
+						Config::get('cancerbero::modulos.nombre').' AS descripcion');
 
 		$permisos = DB::table(Config::get('cancerbero::permisos.tabla'))
 				->select(Config::get('cancerbero::permisos.id').' AS permisoid', 

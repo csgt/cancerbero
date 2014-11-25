@@ -12,7 +12,7 @@
 			<div class="col-md-4">
 				<div class="panel panel-default">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">{{ $modulo->modulo }} <small>{{ $modulo->nombre }}</small></h3>
+				    <h3 class="panel-title">{{ $modulo->modulo }} <small>{{ $modulo->descripcion }}</small></h3>
 				  </div>
 				  <div class="panel-body">
 				  	<div class="pull-right">
