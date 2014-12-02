@@ -12,7 +12,7 @@
 			<div class="col-md-4">
 				<div class="panel panel-default">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">{{ $modulo }} <small>{{ $val['ruta'] }}</small></h3>
+				    <h3 class="panel-title">{{ $modulo }}</h3>
 				  </div>
 				  <div class="panel-body">
 				  	<div class="pull-right">
@@ -22,7 +22,7 @@
 				  	@foreach($val['permisos'] as $permiso)
 							<div>
 								<input type="checkbox" value="{{ $permiso['id'] }}" id="mp{{ $permiso['id'] }}" name="modulopermisos[]" class="chk{{ $val['moduloid'] }}" {{ (in_array($permiso['id'], $rolmodulopermisos)) ? 'checked="true"' : '' }}>
-								{{ $permiso['nombre'] }}<small>{{ $permiso['ruta'] }}</small>
+								{{ $permiso['nombre'] }}
 							</div>
 				  	@endforeach
 				  </div>
