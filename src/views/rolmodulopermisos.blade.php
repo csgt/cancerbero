@@ -22,7 +22,7 @@
 				  	@foreach($val['permisos'] as $permiso)
 							<div>
 								<input type="checkbox" value="{{ $permiso['id'] }}" id="mp{{ $permiso['id'] }}" name="modulopermisos[]" class="chk{{ $val['moduloid'] }}" {{ (in_array($permiso['id'], $rolmodulopermisos)) ? 'checked="true"' : '' }}>
-								{{ $permiso['nombre'] }}
+								{{ $permiso['nombre'] }}<small>{{ $permiso['ruta'] }}</small>
 							</div>
 				  	@endforeach
 				  </div>

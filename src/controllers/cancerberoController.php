@@ -52,6 +52,8 @@ class cancerberoController extends BaseController {
 		$insertar = array_diff($actuales, $anteriores);
 		$borrar   = array_diff($anteriores, $actuales);
 
+
+
 		foreach($insertar as $i){
 			$arr = explode('-', $i);
 			$mp  = DB::table(Config::get('cancerbero::modulopermisos.tabla'))
@@ -83,8 +85,11 @@ class cancerberoController extends BaseController {
 		$modulopermisos = DB::table(Config::get('cancerbero::modulopermisos.tabla').' AS modulopermisos')
 			->select(Config::get('cancerbero::modulopermisos.id'),
 				'modulos.'.Config::get('cancerbero::modulos.id'),
-				DB::raw('IF(modulos.'.Config::get('cancerbero::modulos.nombrefriendly').'="",modulos.'.Config::get('cancerbero::modulos.nombre').',modulos.'.Config::get('cancerbero::modulos.nombrefriendly').') AS modulo'),
-				DB::raw('IF(permisos.'.Config::get('cancerbero::permisos.nombrefriendly').'="",permisos.'.Config::get('cancerbero::permisos.nombre').',permisos.'.Config::get('cancerbero::permisos.nombrefriendly').') AS permiso'))
+				'modulos.'.Config::get('cancerbero::modulos.nombrefriendly') . ' AS modulo',
+				'modulos.'.Config::get('cancerbero::modulos.nombre') . ' AS ruta',
+				'permisos.'.Config::get('cancerbero::permisos.nombrefriendly') . ' AS permisodesc',
+				'permisos.'.Config::get('cancerbero::permisos.nombre') . ' AS permiso'
+				)
 			->leftJoin(Config::get('cancerbero::modulos.tabla').' AS modulos', 'modulopermisos.'.Config::get('cancerbero::modulopermisos.moduloid'), '=', 'modulos.'.Config::get('cancerbero::modulos.id'))
 			->leftJoin(Config::get('cancerbero::permisos.tabla').' AS permisos', 'modulopermisos.'.Config::get('cancerbero::modulopermisos.permisoid'), '=', 'permisos.'.Config::get('cancerbero::permisos.id'))
 			->orderBy('modulo')
@@ -96,8 +101,10 @@ class cancerberoController extends BaseController {
 		foreach($modulopermisos as $mp){
 			if($mp->modulo <> $moduloatual) $i = 0;
 			$modulopermisosarray[$mp->modulo]['moduloid']               = $mp->moduloid;
+			$modulopermisosarray[$mp->modulo]['ruta']                   = $mp->ruta;
 			$modulopermisosarray[$mp->modulo]['permisos'][$i]['id']     = $mp->modulopermisoid;
-			$modulopermisosarray[$mp->modulo]['permisos'][$i]['nombre'] = $mp->permiso;
+			$modulopermisosarray[$mp->modulo]['permisos'][$i]['nombre'] = $mp->permisodesc;
+			$modulopermisosarray[$mp->modulo]['permisos'][$i]['ruta']   = $mp->permiso;
 			$moduloatual                                                = $mp->modulo;
 			$i++;
 		}
