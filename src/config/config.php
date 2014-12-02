@@ -5,8 +5,7 @@ return array(
 		'tabla'          => 'authmodulos',
 		'id'             => 'moduloid',
 		'nombre'         => 'nombre',
-		'nombrefriendly' => 'nombrefriendly',
-		'descripcion'    => 'descripcion',
+		'nombrefriendly' => 'nombrefriendly'
 	),
 
 	'permisos' => array(

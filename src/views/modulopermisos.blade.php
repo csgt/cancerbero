@@ -9,10 +9,10 @@
   @endif
 	{{ Form::open() }}
 		@foreach($modulos as $modulo)
-			<div class="col-md-4">
+			<div class="col-sm-4">
 				<div class="panel panel-default">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">{{ $modulo->modulo }} <small>{{ $modulo->descripcion }}</small></h3>
+				    <h3 class="panel-title">{{ $modulo->modulo }} <small>{{ $modulo->ruta }}</small></h3>
 				  </div>
 				  <div class="panel-body">
 				  	<div class="pull-right">
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 		@endforeach
-		<div class="col-md-12">{{Form::submit('Guardar', array('class' => 'btn btn-primary'))}}</div>
+		<div class="col-sm-12">{{Form::submit('Guardar', array('class' => 'btn btn-primary'))}}</div>
 	{{ Form::close() }}
 	<script>
 		$(document).ready(function(){

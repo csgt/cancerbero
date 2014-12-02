@@ -10,8 +10,8 @@ class cancerberoController extends BaseController {
 
 		$modulos = DB::table(Config::get('cancerbero::modulos.tabla'))
 				->select(Config::get('cancerbero::modulos.id').' AS moduloid', 
-						DB::raw('IF('.Config::get('cancerbero::modulos.nombrefriendly').'="",'.Config::get('cancerbero::modulos.nombre').','.Config::get('cancerbero::modulos.nombrefriendly').') AS modulo'), 
-						Config::get('cancerbero::modulos.nombre').' AS descripcion');
+						Config::get('cancerbero::modulos.nombre').' AS ruta'),
+						Config::get('cancerbero::modulos.nombrefriendly').' AS modulo');
 
 		$permisos = DB::table(Config::get('cancerbero::permisos.tabla'))
 				->select(Config::get('cancerbero::permisos.id').' AS permisoid', 
@@ -83,7 +83,6 @@ class cancerberoController extends BaseController {
 		$modulopermisos = DB::table(Config::get('cancerbero::modulopermisos.tabla').' AS modulopermisos')
 			->select(Config::get('cancerbero::modulopermisos.id'),
 				'modulos.'.Config::get('cancerbero::modulos.id'),
-				'modulos.'.Config::get('cancerbero::modulos.descripcion').' AS descripcion',
 				DB::raw('IF(modulos.'.Config::get('cancerbero::modulos.nombrefriendly').'="",modulos.'.Config::get('cancerbero::modulos.nombre').',modulos.'.Config::get('cancerbero::modulos.nombrefriendly').') AS modulo'),
 				DB::raw('IF(permisos.'.Config::get('cancerbero::permisos.nombrefriendly').'="",permisos.'.Config::get('cancerbero::permisos.nombre').',permisos.'.Config::get('cancerbero::permisos.nombrefriendly').') AS permiso'))
 			->leftJoin(Config::get('cancerbero::modulos.tabla').' AS modulos', 'modulopermisos.'.Config::get('cancerbero::modulopermisos.moduloid'), '=', 'modulos.'.Config::get('cancerbero::modulos.id'))
@@ -96,7 +95,6 @@ class cancerberoController extends BaseController {
 		$i = 0;
 		foreach($modulopermisos as $mp){
 			if($mp->modulo <> $moduloatual) $i = 0;
-			$modulopermisosarray[$mp->modulo]['descripcion']            = $mp->descripcion;
 			$modulopermisosarray[$mp->modulo]['moduloid']               = $mp->moduloid;
 			$modulopermisosarray[$mp->modulo]['permisos'][$i]['id']     = $mp->modulopermisoid;
 			$modulopermisosarray[$mp->modulo]['permisos'][$i]['nombre'] = $mp->permiso;
