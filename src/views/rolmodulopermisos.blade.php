@@ -1,12 +1,18 @@
 @extends('template/template')
 
 @section('content')
+	<ol class="breadcrumb">
+		<li><a href="{{URL::route('roles.index')}}">Roles</a></li>
+		<li>Asignación de permisos</li>
+		<li class="active">{{$nombrerol}}<li>
+	</ol>
 	@if(Session::get('flashMessage')) 
     <div class="alert alert-{{ Session::get('flashType', 'danger') }} alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       {{Session::get('flashMessage')}}
     </div>
   @endif
+  <div class="row">
 	{{ Form::open(array('url'=>'cancerbero/asignar')) }}
 		@foreach($modulopermisos as $modulo => $val )
 			<div class="col-md-4">
@@ -29,7 +35,8 @@
 				</div>
 			</div>
 		@endforeach
-		<div class="col-md-12">{{Form::submit('Guardar', array('class' => 'btn btn-primary'))}}</div>
+			<div class="col-md-12">{{Form::submit('Guardar', array('class' => 'btn btn-primary'))}}</div>
+		</div>
 		{{ Form::hidden('id', $rolid) }}
 	{{ Form::close() }}
 	<script>

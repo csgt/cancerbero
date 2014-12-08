@@ -110,15 +110,19 @@ class cancerberoController extends BaseController {
 		}
 
 		$rolmodulopermisosarray = array();
-		$rolmodulopermisos = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla'))
-			->select(Config::get('cancerbero::rolmodulopermisos.modulopermisoid').' AS modulopermiso')
-			->where(Config::get('cancerbero::rolmodulopermisos.rolid'), $id)
+		$rolmodulopermisos = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla') . ' AS rmp')
+			->leftJoin(Config::get('cancerbero::roles.tabla') . ' AS roles','roles.rolid','=','rmp.rolid')
+			->select('rmp.' . Config::get('cancerbero::rolmodulopermisos.modulopermisoid').' AS modulopermiso',
+					'roles.' . Config::get('cancerbero::roles.nombre') . ' AS rol')
+			->where('rmp.' . Config::get('cancerbero::rolmodulopermisos.rolid'), $id)
 			->get();
+		$nombrerol = $rolmodulopermisos[0]->rol;
 
 		foreach($rolmodulopermisos as $rmp)
 			$rolmodulopermisosarray[] = $rmp->modulopermiso;
 
 		return View::make('cancerbero::rolmodulopermisos')
+			->with('nombrerol', $nombrerol)
 			->with('rolid', Crypt::encrypt($id))
 			->with('modulopermisos', $modulopermisosarray)
 			->with('rolmodulopermisos', $rolmodulopermisosarray);
