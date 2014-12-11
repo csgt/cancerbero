@@ -116,7 +116,9 @@ class cancerberoController extends BaseController {
 					'roles.' . Config::get('cancerbero::roles.nombre') . ' AS rol')
 			->where('rmp.' . Config::get('cancerbero::rolmodulopermisos.rolid'), $id)
 			->get();
-		$nombrerol = $rolmodulopermisos[0]->rol;
+		$nombrerol = DB::table(Config::get('cancerbero::roles.tabla'))
+			->where('rolid', $id)
+			->pluck(Config::get('cancerbero::roles.nombre'));
 
 		foreach($rolmodulopermisos as $rmp)
 			$rolmodulopermisosarray[] = $rmp->modulopermiso;
