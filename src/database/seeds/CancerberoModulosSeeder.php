@@ -25,6 +25,6 @@
 				'created_at'     => date_create(), 'updated_at' => date_create()
 			));
 				  
-		  DB::statement('SET FOREIGN_KEY_CHECKS=1')
+		  DB::statement('SET FOREIGN_KEY_CHECKS=1');
 		}
 	}
