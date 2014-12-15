@@ -6,7 +6,9 @@ class CancerberoDatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 		$this->call('CancerberoModulosSeeder');
 		$this->call('CancerberoPermisosSeeder');
-		$this->call('CancerberoModulopermisosSeeder');
+		$this->call('CancerberoModuloPermisosSeeder');
+		$this->call('CancerberoRolesSeeder');
+		$this->call('CancerberoUsuariosSeeder');
 	}
 
 }
