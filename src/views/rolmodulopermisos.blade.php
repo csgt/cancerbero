@@ -12,22 +12,29 @@
       {{Session::get('flashMessage')}}
     </div>
   @endif
-  <div class="row">
-	{{ Form::open(array('url'=>'cancerbero/asignar')) }}
+	{{ Form::open(array('url'=>'cancerbero/asignar', 'class'=>'form-inline')) }}
+	<div class="col-sm-12">
+		<a href="javascript:void(0);" class="lnkTodosC">Todos</a> | 
+		<a href="javascript:void(0);" class="lnkNingunoC">Ninguno</a>
+	</div>
+	<br>
+	<br>
 		@foreach($modulopermisos as $modulo => $val )
-			<div class="col-md-4">
+			<div class="col-md-12">
 				<div class="panel panel-default">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">{{ $modulo }}</h3>
-				  </div>
-				  <div class="panel-body">
-				  	<div class="pull-right">
+				    <h3 class="panel-title pull-left">{{ $modulo }}</h3>
+				    <div class="pull-right">
 				  		<a href="javascript:void(0);" id="tod{{ $val['moduloid'] }}" class="lnkTodos">Todos</a> | 
 				  		<a href="javascript:void(0);" id="nin{{ $val['moduloid'] }}" class="lnkNinguno">Ninguno</a>
 				  	</div>
+				  	<div class="clearfix"></div>
+				  </div>
+
+				  <div class="panel-body">
 				  	@foreach($val['permisos'] as $permiso)
-							<div>
-								<input type="checkbox" value="{{ $permiso['id'] }}" id="mp{{ $permiso['id'] }}" name="modulopermisos[]" class="chk{{ $val['moduloid'] }}" {{ (in_array($permiso['id'], $rolmodulopermisos)) ? 'checked="true"' : '' }}>
+							<div class="col-sm-2">
+								<input type="checkbox" value="{{ $permiso['id'] }}" id="mp{{ $permiso['id'] }}" name="modulopermisos[]" class="chks chk{{ $val['moduloid'] }}" {{ (in_array($permiso['id'], $rolmodulopermisos)) ? 'checked="true"' : '' }}>
 								{{ $permiso['nombre'] }}
 							</div>
 				  	@endforeach
@@ -35,8 +42,7 @@
 				</div>
 			</div>
 		@endforeach
-			<div class="col-md-12">{{Form::submit('Guardar', array('class' => 'btn btn-primary'))}}</div>
-		</div>
+		<div class="col-md-12">{{Form::submit('Guardar', array('class' => 'btn btn-primary'))}}</div>
 		{{ Form::hidden('id', $rolid) }}
 	{{ Form::close() }}
 	<script>
@@ -49,6 +55,14 @@
 			$('.lnkNinguno').click(function(){
 				id = $(this).attr('id').substr(3);
 				$('.chk' + id).prop('checked', false);
+			});
+
+			$('.lnkTodosC').click(function(){
+				$('.chks').prop('checked',true);
+			});
+
+			$('.lnkNingunoC').click(function(){
+				$('.chks').prop('checked', false);
 			});
 		});
 	</script>
