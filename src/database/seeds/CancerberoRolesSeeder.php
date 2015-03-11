@@ -7,10 +7,10 @@
 			DB::table('authroles')->insert(array(
 				'rolid'       => 1,
 				'nombre'      => 'CS Admin',
-				'descripcion' => 'Rol backdoor',
-				'created_at'  => date_create(), 'updated_at' => date_create()
+				'descripcion' => 'Rol backdoor'
 			));
 				  
+			DB::table('authroles')->update(array('created_at'=>date_create(), 'updated_at'=>date_create()));	 
 		  DB::statement('SET FOREIGN_KEY_CHECKS=1');
 		}
 	}
