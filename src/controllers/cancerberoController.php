@@ -125,6 +125,7 @@ class cancerberoController extends BaseController {
 			$rolmodulopermisosarray[] = $rmp->modulopermiso;
 
 		return View::make('cancerbero::rolmodulopermisos')
+			->with('template', Config::get('cancerbero::template','template.template'))
 			->with('nombrerol', $nombrerol)
 			->with('rolid', Crypt::encrypt($id))
 			->with('modulopermisos', $modulopermisosarray)
