@@ -36,6 +36,7 @@ class cancerberoController extends BaseController {
 		$permisos       = $permisos->get();
 
 		return View::make('cancerbero::modulopermisos')
+			->with('template', Config::get('cancerbero::template','template.template'))
 			->with('modulos', $modulos)
 			->with('permisos', $permisos)
 			->with('modulopermisos', $modulopermisosarray);
@@ -124,6 +125,7 @@ class cancerberoController extends BaseController {
 			$rolmodulopermisosarray[] = $rmp->modulopermiso;
 
 		return View::make('cancerbero::rolmodulopermisos')
+			->with('template', Config::get('cancerbero::template','template.template'))
 			->with('nombrerol', $nombrerol)
 			->with('rolid', Crypt::encrypt($id))
 			->with('modulopermisos', $modulopermisosarray)

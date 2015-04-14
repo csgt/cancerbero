@@ -15,12 +15,11 @@ class MigrationTablaAuthusuarios extends Migration {
 			$table->tinyinteger('activo')->default(1);
 			$table->tinyinteger('cambiopassword')->default(1);
 			$table->tinyinteger('notificar')->default(0);
-			$table->string('remember_token',255);
+			$table->rememberToken();
 			$table->string('twostepsecret',255);
 			$table->string('facebookid',255);
 			$table->string('googleid',255);
 			$table->timestamps();
-
 			$table->foreign('rolid')->references('rolid')->on('authroles')->onDelete('restrict')->onUpdate('cascade');
 		});
 	}

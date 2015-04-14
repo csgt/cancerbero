@@ -1,4 +1,4 @@
-@extends('template/template')
+@extends($template)
 
 @section('content')
 	@if(Session::get('flashMessage')) 

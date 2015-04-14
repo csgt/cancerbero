@@ -56,5 +56,6 @@ return array(
 		'id'                           => 'usuariorolid',
 		'usuarioid'                    => 'usuarioid',
 		'rolid'                        => 'rolid'),
-
+	
+	'template'											 => 'template.template',
 );

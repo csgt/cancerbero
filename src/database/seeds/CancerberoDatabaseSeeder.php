@@ -9,6 +9,7 @@ class CancerberoDatabaseSeeder extends Seeder {
 		$this->call('CancerberoModuloPermisosSeeder');
 		$this->call('CancerberoRolesSeeder');
 		$this->call('CancerberoUsuariosSeeder');
+		$this->call('CancerberoRolModuloPermisosSeeder');
 	}
 
 }
