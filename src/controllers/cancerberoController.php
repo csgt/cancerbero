@@ -138,11 +138,13 @@ class cancerberoController extends BaseController {
 			->where(Config::get('cancerbero::rolmodulopermisos.rolid'), $rolid)
 			->delete();
 
-		foreach($modulopermisos as $modulopermiso){
-			$rmp  = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla'))
-				->insert(array(
-					Config::get('cancerbero::rolmodulopermisos.rolid')           => $rolid,
-					Config::get('cancerbero::rolmodulopermisos.modulopermisoid') => $modulopermiso));
+		if($modulopermisos) {
+			foreach($modulopermisos as $modulopermiso){
+				$rmp  = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla'))
+					->insert(array(
+						Config::get('cancerbero::rolmodulopermisos.rolid')           => $rolid,
+						Config::get('cancerbero::rolmodulopermisos.modulopermisoid') => $modulopermiso));
+			}
 		}
 
 		return Redirect::to(Config::get('cancerbero::rutaroles'))
