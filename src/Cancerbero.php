@@ -9,7 +9,7 @@ class Cancerbero {
 		
 		if (Auth::guest()){
 			if($aRedirect)
-				return Redirect::guest(Config::get('cancerbero::rutalogin'));
+				return Redirect::guest(config('csgtcancerbero.rutalogin'));
 			else
 				return null;
 		}
@@ -28,27 +28,27 @@ class Cancerbero {
 			$modulo  = $arr[0];
 
 		if($modulo == '') {
-			$response['error']  = Config::get('cancerbero::errorenrutas');
+			$response['error']  = config('csgtcancerbero.errorenrutas');
 			$response['acceso'] = false;
 			return Response::json($response);
 		}
 
-		$modulostbl   = Config::get('cancerbero::modulos.tabla');
-		$permisostbl  = Config::get('cancerbero::permisos.tabla');
-		$mptabl       = Config::get('cancerbero::modulopermisos.tabla');
-		$modulospk    = Config::get('cancerbero::modulos.id');
-		$permisospk   = Config::get('cancerbero::permisos.id');
-		$modulosname  = Config::get('cancerbero::modulos.nombre');
-		$permisosname = Config::get('cancerbero::permisos.nombre');
-		$mppk         = Config::get('cancerbero::modulopermisos.id');
-		$rmppk        = Config::get('cancerbero::rolmodulopermisos.id');
-		$colrolid     = Config::get('cancerbero::rolidusuarios');
-		$urtabla      = Config::get('cancerbero::usuarioroles.tabla');
-		$urusuario    = Config::get('cancerbero::usuarioroles.usuarioid');
-		$urrol        = Config::get('cancerbero::usuarioroles.rolid');
+		$modulostbl   = config('csgtcancerbero.modulos.tabla');
+		$permisostbl  = config('csgtcancerbero.permisos.tabla');
+		$mptabl       = config('csgtcancerbero.modulopermisos.tabla');
+		$modulospk    = config('csgtcancerbero.modulos.id');
+		$permisospk   = config('csgtcancerbero.permisos.id');
+		$modulosname  = config('csgtcancerbero.modulos.nombre');
+		$permisosname = config('csgtcancerbero.permisos.nombre');
+		$mppk         = config('csgtcancerbero.modulopermisos.id');
+		$rmppk        = config('csgtcancerbero.rolmodulopermisos.id');
+		$colrolid     = config('csgtcancerbero.rolidusuarios');
+		$urtabla      = config('csgtcancerbero.usuarioroles.tabla');
+		$urusuario    = config('csgtcancerbero.usuarioroles.usuarioid');
+		$urrol        = config('csgtcancerbero.usuarioroles.rolid');
 
 		$usuarioroles = array();
-		if(Config::get('cancerbero::multiplesroles')) {
+		if(config('csgtcancerbero.multiplesroles')) {
 			$usuarioroles = DB::table($urtabla)
 				->where($urusuario, Auth::id())
 				->lists($urrol);
@@ -58,7 +58,7 @@ class Cancerbero {
 			$usuarioroles[] = Auth::user()->$colrolid;
 
 		foreach($usuarioroles as $ur) {
-			$rolmodulopermisoid = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla').' AS rmp')
+			$rolmodulopermisoid = DB::table(config('csgtcancerbero.rolmodulopermisos.tabla').' AS rmp')
 				->leftJoin($mptabl.' AS mp', 'mp.'.$mppk, '=', 'rmp.'.$mppk)
 				->leftJoin($modulostbl.' AS m', 'm.'.$modulospk, '=', 'mp.'.$modulospk)
 				->leftJoin($permisostbl.' AS p', 'p.'.$permisospk, '=', 'mp.'.$permisospk)
@@ -74,24 +74,24 @@ class Cancerbero {
 			}
 		}
 
-		$response['error']  = Config::get('cancerbero::accesodenegado');
+		$response['error']  = config('csgtcancerbero.accesodenegado');
 		$response['acceso'] = false;
 		return Response::json($response);
 	}
 
 	public static function tienePermisosCrud($aModulo) {
 		$addjson = self::tienePermisos($aModulo.'.create', false);
-		if($addjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
+		if($addjson == null) return Redirect::guest(config('csgtcancerbero.rutalogin'));
 		$add     = $addjson->getData();
 		$add     = $add->acceso;
 
 		$editjson = self::tienePermisos($aModulo.'.edit', false);
-		if($editjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
+		if($editjson == null) return Redirect::guest(config('csgtcancerbero.rutalogin'));
 		$edit     = $editjson->getData();
 		$edit     = $edit->acceso;
 
 		$deletejson = self::tienePermisos($aModulo.'.destroy', false);
-		if($deletejson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
+		if($deletejson == null) return Redirect::guest(config('csgtcancerbero.rutalogin'));
 		$delete     = $deletejson->getData();
 		$delete     = $delete->acceso;
 
@@ -99,14 +99,14 @@ class Cancerbero {
 	}
 
 	public static function isGod() {
-		$rolid = Config::get('cancerbero::roles.id');
-		if(Auth::user()->$rolid == Config::get('cancerbero::rolbackdoor'))
+		$rolid = config('csgtcancerbero.roles.id');
+		if(Auth::user()->$rolid == config('csgtcancerbero.rolbackdoor'))
 			return true;
 		else
 			return false;
 	}
 
 	public static function getGodRol() {
-		return Config::get('cancerbero::rolbackdoor');
+		return config('csgtcancerbero.rolbackdoor');
 	}
 }

@@ -2,27 +2,23 @@
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Routing\Router;
 
 class CancerberoServiceProvider extends ServiceProvider {
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
 	protected $defer = false;
 
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->package('csgt/cancerbero');
+	public function boot(Router $router) {
+		$this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
+    $this->loadViewsFrom(__DIR__ . '/resources/views/','csgtcancerbero');
+
+    if (!$this->app->routesAreCached()) {
+      require __DIR__.'/Http/routes.php';
+    }
+
     AliasLoader::getInstance()->alias('Cancerbero','Csgt\Cancerbero\Cancerbero');
-    include __DIR__.'/../../routes.php';
-    include __DIR__.'/../../filters.php';
+
+    $router->middleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
 	}
 
 	public function register() {

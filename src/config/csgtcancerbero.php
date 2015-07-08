@@ -39,6 +39,8 @@ return array(
 	
 	'mensajerolmodulopermisoexitoso' => 'Se han actualizado los permisos para el rol exitosamente.',
 	
+	'mensajerolinvalido' 						 => 'Rol inválido.',
+
 	'rutalogin'                      => 'login',
 	
 	'rutaroles'                      => 'roles', 

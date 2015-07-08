@@ -27,7 +27,7 @@
 	<div class="bs-callout bs-callout-danger">
 	  <dl class="dl-horizontal">
 	    <h4><span class="glyphicon glyphicon-minus-sign"></span> Error</h4>
-	    <p>{{ $mensaje }}</p>
+	    <p>{!! $mensaje !!}</p>
 	  </dl>
 	</div>
 @stop
