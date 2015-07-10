@@ -30,5 +30,4 @@ class CancerberoServiceProvider extends ServiceProvider {
 	public function provides() {
 		return array('cancerbero');
 	}
-
 }

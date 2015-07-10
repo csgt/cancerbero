@@ -13,5 +13,6 @@ class CancerberoMW {
 
 	  if(!$result->acceso)
 	    return view('csgtcancerbero::error')->with('mensaje', 'No tiene permiso para este módulo (' . Route::currentRouteName() . ')');
+	  return $next($request);
 	}
 }
