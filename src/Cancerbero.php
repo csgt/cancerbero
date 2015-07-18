@@ -99,11 +99,15 @@ class Cancerbero {
 	}
 
 	public static function isGod() {
-		$rolid = config('csgtcancerbero.roles.id');
-		if(Auth::user()->$rolid == config('csgtcancerbero.rolbackdoor'))
-			return true;
-		else
-			return false;
+		if (Auth::check()) {
+			$rolid = config('csgtcancerbero.roles.id');
+			if(Auth::user()->$rolid == config('csgtcancerbero.rolbackdoor'))
+				return true;
+			else
+				return false;
+		}
+		else return false;
+
 	}
 
 	public static function getGodRol() {
