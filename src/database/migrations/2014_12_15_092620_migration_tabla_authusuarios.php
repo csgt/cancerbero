@@ -20,6 +20,8 @@ class MigrationTablaAuthusuarios extends Migration {
 			$table->string('googleid',255);
 			$table->timestamps();
 			$table->foreign('rolid')->references('rolid')->on('authroles')->onDelete('restrict')->onUpdate('cascade');
+		
+			$table->unique('email');
 		});
 	}
 
