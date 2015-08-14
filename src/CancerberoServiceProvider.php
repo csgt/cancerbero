@@ -9,7 +9,7 @@ class CancerberoServiceProvider extends ServiceProvider {
 	protected $defer = false;
 
 	public function boot(Router $router) {
-		$this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
+    $this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
     $this->loadViewsFrom(__DIR__ . '/resources/views/','csgtcancerbero');
 
     if (!$this->app->routesAreCached()) {
@@ -23,6 +23,9 @@ class CancerberoServiceProvider extends ServiceProvider {
     $this->publishes([
         __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
     ], 'migrations');
+    $this->publishes([
+      __DIR__.'/config/csgtcancerbero.php' => config_path('csgtcancerbero.php'),
+    ], 'config');
 	}
 
 	public function register() {

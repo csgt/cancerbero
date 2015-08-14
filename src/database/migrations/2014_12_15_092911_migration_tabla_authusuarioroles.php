@@ -12,6 +12,7 @@ class MigrationTablaAuthusuarioroles extends Migration {
 			$table->integer('rolid')->unsigned();
 			$table->timestamps();
 
+			$table->unique(['usuarioid','rolid']);
 			$table->foreign('usuarioid')->references('usuarioid')->on('authusuarios')->onDelete('restrict')->onUpdate('cascade');
 			$table->foreign('rolid')->references('rolid')->on('authroles')->onDelete('restrict')->onUpdate('cascade');
 		});
