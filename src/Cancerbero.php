@@ -48,12 +48,11 @@ class Cancerbero {
 		$urrol        = config('csgtcancerbero.usuarioroles.rolid');
 
 		$usuarioroles = array();
-		if(config('csgtcancerbero.multiplesroles')) {
+		if(config('csgtcancerbero.multiplesroles')==true) {
 			$usuarioroles = DB::table($urtabla)
 				->where($urusuario, Auth::id())
 				->lists($urrol);
 		}
-
 		else
 			$usuarioroles[] = Auth::user()->$colrolid;
 
@@ -101,10 +100,27 @@ class Cancerbero {
 	public static function isGod() {
 		if (Auth::check()) {
 			$rolid = config('csgtcancerbero.roles.id');
-			if(Auth::user()->$rolid == config('csgtcancerbero.rolbackdoor'))
-				return true;
-			else
-				return false;
+			$rolbackdoor = config('csgtcancerbero.rolbackdoor');
+
+			if(config('csgtcancerbero::multiplesroles')===true) {
+				$urtabla      = config('csgtcancerbero.usuarioroles.tabla');
+				$urusuario    = config('csgtcancerbero.usuarioroles.usuarioid');
+				$urrol        = config('csgtcancerbero.usuarioroles.rolid');
+
+				$usuarioroles = DB::table($urtabla)
+					->where($urusuario, Auth::id())
+					->lists($urrol);
+				if (in_array($rolbackdoor, $usuarioroles)) 
+					return true;
+				else
+					return false;
+			}	
+			else {
+				if(Auth::user()->$rolid == $rolbackdoor)
+					return true;
+				else
+					return false;
+			}
 		}
 		else return false;
 
