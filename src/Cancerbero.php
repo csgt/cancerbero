@@ -102,7 +102,8 @@ class Cancerbero {
 			$rolid = config('csgtcancerbero.roles.id');
 			$rolbackdoor = config('csgtcancerbero.rolbackdoor');
 
-			if(config('csgtcancerbero::multiplesroles')===true) {
+			if(config('csgtcancerbero.multiplesroles')===true) {
+				
 				$urtabla      = config('csgtcancerbero.usuarioroles.tabla');
 				$urusuario    = config('csgtcancerbero.usuarioroles.usuarioid');
 				$urrol        = config('csgtcancerbero.usuarioroles.rolid');
