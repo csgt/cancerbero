@@ -14,7 +14,7 @@
 	    border-width: 1px 1px 1px 5px;
 	    margin: 20px 0;
 	    padding: 20px;
-	    background-color: #000;
+	    background-color: #fff;
 		}
 
 		.bs-callout-danger {
