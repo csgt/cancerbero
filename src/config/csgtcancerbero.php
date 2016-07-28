@@ -1,39 +1,44 @@
 <?php
 return array(
 
-	'modulos'                        => array(
-		'tabla'                        => 'authmodulos',
-		'id'                           => 'moduloid',
-		'nombre'                       => 'nombre',
-		'nombrefriendly'               => 'nombrefriendly'),
+	'modulos' => [
+		'tabla'          => 'authmodulos',
+		'id'             => 'moduloid',
+		'nombre'         => 'nombre',
+		'nombrefriendly' => 'nombrefriendly'
+	],
 
-	'permisos'                       => array(
-		'tabla'                        => 'authpermisos',
-		'id'                           => 'permisoid',
-		'nombre'                       => 'nombre',
-		'nombrefriendly'               => 'nombrefriendly'),
+	'permisos' => [
+		'tabla'          => 'authpermisos',
+		'id'             => 'permisoid',
+		'nombre'         => 'nombre',
+		'nombrefriendly' => 'nombrefriendly'
+	],
 
-	'roles'                          => array(
-		'tabla'                        => 'authroles',
-		'id'                           => 'rolid',
-		'nombre'                       => 'nombre',
-		'nombrefriendly'               => 'descripcion'),
+	'roles' => [
+		'tabla'          => 'authroles',
+		'id'             => 'rolid',
+		'nombre'         => 'nombre',
+		'nombrefriendly' => 'descripcion'
+	],
 
-	'rolidusuarios'                  => 'rolid',
+	'rolidusuarios' => 'rolid',
 
-	'modulopermisos'                 => array(
-		'tabla'                        => 'authmodulopermisos',
-		'id'                           => 'modulopermisoid',
-		'moduloid'                     => 'moduloid',
-		'permisoid'                    => 'permisoid'),
+	'modulopermisos' => [
+		'tabla'     => 'authmodulopermisos',
+		'id'        => 'modulopermisoid',
+		'moduloid'  => 'moduloid',
+		'permisoid' => 'permisoid'
+	],
 
-	'rolmodulopermisos'              => array(
-		'tabla'                        => 'authrolmodulopermisos',
-		'id'                           => 'rolmodulopermisoid',
-		'modulopermisoid'              => 'modulopermisoid',
-		'rolid'                        => 'rolid'),
+	'rolmodulopermisos' => [
+		'tabla'           => 'authrolmodulopermisos',
+		'id'              => 'rolmodulopermisoid',
+		'modulopermisoid' => 'modulopermisoid',
+		'rolid'           => 'rolid'
+	],
 	
-	'rolbackdoor'                    => 1,
+	'rolbackdoor' => 1,
 	
 	'mensajemodulopermisoexitoso'    => 'Se han actualizado los permisos para los m&oacute;dulos exitosamente.',
 	
@@ -53,13 +58,14 @@ return array(
 
 	'multiplesroles'                 => false,
 
-	'usuarioroles'                   => array(
-		'tabla'                        => 'authusuarioroles',
-		'id'                           => 'usuariorolid',
-		'usuarioid'                    => 'usuarioid',
-		'rolid'                        => 'rolid'),
+	'usuarioroles' => [
+		'tabla'     => 'authusuarioroles',
+		'id'        => 'usuariorolid',
+		'usuarioid' => 'usuarioid',
+		'rolid'     => 'rolid'
+	],
 	
-	'template'											 => 'template.template',
+	'template' => 'template.template',
 
 	/*
 	|--------------------------------------------------------------------------
