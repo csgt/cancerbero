@@ -1,4 +1,4 @@
-<?php namespace namespace Csgt\Cancerbero\Facades;
+<?php namespace Csgt\Cancerbero\Facades;
  
 use Illuminate\Support\Facades\Facade;
  
