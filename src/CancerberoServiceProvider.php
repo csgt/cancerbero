@@ -29,6 +29,10 @@ class CancerberoServiceProvider extends ServiceProvider {
 	}
 
 	public function register() {
+    $this->commands([
+      Console\MakeCancerberoCommand::class
+    ]);
+
 		$this->app['cancerbero'] = $this->app->share(function($app) {
     	return new Cancerbero;
   	});

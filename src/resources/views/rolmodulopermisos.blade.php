@@ -12,7 +12,7 @@
       {!!Session::get('flashMessage')!!}
     </div>
   @endif
-	{!! Form::open(array('url'=>'cancerbero/asignar', 'class'=>'form-inline')) !!}
+  <form action="/cancerbero/asignar" method="post" class="form-inline">
 	<div class="col-sm-12">
 		<a href="javascript:void(0);" class="lnkTodosC">Todos</a> | 
 		<a href="javascript:void(0);" class="lnkNingunoC">Ninguno</a>
@@ -42,9 +42,11 @@
 				</div>
 			</div>
 		@endforeach
-		<div class="col-md-12">{!!Form::submit('Guardar', array('class' => 'btn btn-primary'))!!}</div>
-		{!! Form::hidden('id', $rolid) !!}
-	{!! Form::close() !!}
+		<div class="col-md-12">
+			<input type="submit" class="btn btn-primary" value="Guardar">
+		</div>
+		<input type="hidden" name="id" value="{{$rolid}}">
+	</form>
 	<script>
 		$(document).ready(function(){
 			$('.lnkTodos').click(function(){

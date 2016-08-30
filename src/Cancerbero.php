@@ -6,7 +6,8 @@ use Config, View, Response, DB, Auth, Redirect;
 class Cancerbero {
 
 	public static function tienePermisos($aRuta, $aRedirect=true) {
-		
+		//dd(Auth::guest());
+
 		if (Auth::guest()){
 			if($aRedirect)
 				return Redirect::guest(config('csgtcancerbero.rutalogin'));
@@ -80,19 +81,25 @@ class Cancerbero {
 
 	public static function tienePermisosCrud($aModulo) {
 		$addjson = self::tienePermisos($aModulo.'.create', false);
-		if($addjson == null) return Redirect::guest(config('csgtcancerbero.rutalogin'));
-		$add     = $addjson->getData();
-		$add     = $add->acceso;
+		if($addjson) {
+			$add     = $addjson->getData();
+			$add     = $add->acceso;
+		}
+		else $add = false;
 
 		$editjson = self::tienePermisos($aModulo.'.edit', false);
-		if($editjson == null) return Redirect::guest(config('csgtcancerbero.rutalogin'));
-		$edit     = $editjson->getData();
-		$edit     = $edit->acceso;
+		if($editjson) {
+			$edit     = $editjson->getData();
+			$edit     = $edit->acceso;
+		}
+		else $edit = false;
 
 		$deletejson = self::tienePermisos($aModulo.'.destroy', false);
-		if($deletejson == null) return Redirect::guest(config('csgtcancerbero.rutalogin'));
-		$delete     = $deletejson->getData();
-		$delete     = $delete->acceso;
+		if($deletejson) {
+			$delete     = $deletejson->getData();
+			$delete     = $delete->acceso;
+		}
+		else $delete = false;
 
 		return array('add'=>$add, 'edit'=>$edit, 'delete'=>$delete);
 	}
@@ -111,20 +118,13 @@ class Cancerbero {
 				$usuarioroles = DB::table($urtabla)
 					->where($urusuario, Auth::id())
 					->lists($urrol);
-				if (in_array($rolbackdoor, $usuarioroles)) 
-					return true;
-				else
-					return false;
+				return (in_array($rolbackdoor, $usuarioroles));
 			}	
 			else {
-				if(Auth::user()->$rolid == $rolbackdoor)
-					return true;
-				else
-					return false;
+				return (Auth::user()->$rolid == $rolbackdoor);
 			}
 		}
 		else return false;
-
 	}
 
 	public static function getGodRol() {
