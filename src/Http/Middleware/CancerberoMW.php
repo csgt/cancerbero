@@ -1,7 +1,7 @@
 <?php 
 namespace Csgt\Cancerbero\Http\Middleware;
 
-use Closure, Auth, Cancerbero, Route, Redirect;
+use Closure, Auth, Cancerbero, Route, Redirect, Session;
 
 class CancerberoMW {
   public function handle($request, Closure $next) {
@@ -11,8 +11,10 @@ class CancerberoMW {
 	  $resultjson = Cancerbero::tienePermisos(Route::currentRouteName());
 	  $result     = $resultjson->getData();
 
-	  if(!$result->acceso)
-	    return view('csgtcancerbero::error')->with('mensaje', 'No tiene permiso para este módulo (' . Route::currentRouteName() . ')');
+	  if(!$result->acceso) {
+	  	Session::flash('mensaje', $result->error . ' (' . Route::currentRouteName() . ')');
+	  	return redirect('cancerbero/error');
+	  }
 	  return $next($request);
 	}
 }

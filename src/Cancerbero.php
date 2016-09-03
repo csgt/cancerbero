@@ -2,6 +2,10 @@
 
 namespace Csgt\Cancerbero;
 use Config, View, Response, DB, Auth, Redirect;
+use App\Models\Cancerbero\Authrol;
+use App\Models\Cancerbero\Authmodulo;
+use App\Models\Cancerbero\Authpermiso;
+use App\Models\Cancerbero\Authmodulopermiso;
 
 class Cancerbero {
 
@@ -34,47 +38,28 @@ class Cancerbero {
 			return Response::json($response);
 		}
 
-		$modulostbl   = config('csgtcancerbero.modulos.tabla');
-		$permisostbl  = config('csgtcancerbero.permisos.tabla');
-		$mptabl       = config('csgtcancerbero.modulopermisos.tabla');
-		$modulospk    = config('csgtcancerbero.modulos.id');
-		$permisospk   = config('csgtcancerbero.permisos.id');
-		$modulosname  = config('csgtcancerbero.modulos.nombre');
-		$permisosname = config('csgtcancerbero.permisos.nombre');
-		$mppk         = config('csgtcancerbero.modulopermisos.id');
-		$rmppk        = config('csgtcancerbero.rolmodulopermisos.id');
-		$colrolid     = config('csgtcancerbero.rolidusuarios');
-		$urtabla      = config('csgtcancerbero.usuarioroles.tabla');
-		$urusuario    = config('csgtcancerbero.usuarioroles.usuarioid');
-		$urrol        = config('csgtcancerbero.usuarioroles.rolid');
+		$moduloid  = Authmodulo::where('nombre', $modulo)->first()->moduloid;
+		$permisoid = Authpermiso::where('nombre', $permiso)->first()->permisoid;
 
-		$usuarioroles = array();
-		if(config('csgtcancerbero.multiplesroles')==true) {
-			$usuarioroles = DB::table($urtabla)
-				->where($urusuario, Auth::id())
-				->lists($urrol);
-		}
-		else
-			$usuarioroles[] = Auth::user()->$colrolid;
+		$usuarioroles = Auth::user()->getRoles();
 
-		foreach($usuarioroles as $ur) {
-			$rolmodulopermisoid = DB::table(config('csgtcancerbero.rolmodulopermisos.tabla').' AS rmp')
-				->leftJoin($mptabl.' AS mp', 'mp.'.$mppk, '=', 'rmp.'.$mppk)
-				->leftJoin($modulostbl.' AS m', 'm.'.$modulospk, '=', 'mp.'.$modulospk)
-				->leftJoin($permisostbl.' AS p', 'p.'.$permisospk, '=', 'mp.'.$permisospk)
-				->where('m.'.$modulosname, $modulo)
-				->where('p.'.$permisosname, $permiso)
-				->where('rmp.'.$colrolid, $ur)
-				->pluck($rmppk);
-
-			if($rolmodulopermisoid <> ''){
+		$ds = Authmodulopermiso::with([
+			'authrolmodulopermisos'=>function($query) use ($usuarioroles){
+				$query->whereIn('authrolmodulopermisos.rolid', $usuarioroles);
+			}
+		])->where('moduloid',$moduloid)
+		->where('permisoid',$permisoid)->first();
+		
+		if ($ds) {
+			$cuantos = $ds->authrolmodulopermisos->count();
+			if ($cuantos>0) {
 				$response['error']  = '';
 				$response['acceso'] = true;
 				return Response::json($response);
 			}
 		}
 
-		$response['error']  = config('csgtcancerbero.accesodenegado');
+		$response['error']  = trans('cancerbero.accesodenegado');
 		$response['acceso'] = false;
 		return Response::json($response);
 	}
@@ -108,21 +93,16 @@ class Cancerbero {
 		if (Auth::check()) {
 			$rolid = config('csgtcancerbero.roles.id');
 			$rolbackdoor = config('csgtcancerbero.rolbackdoor');
-
-			if(config('csgtcancerbero.multiplesroles')===true) {
 				
-				$urtabla      = config('csgtcancerbero.usuarioroles.tabla');
-				$urusuario    = config('csgtcancerbero.usuarioroles.usuarioid');
-				$urrol        = config('csgtcancerbero.usuarioroles.rolid');
+			$urtabla      = config('csgtcancerbero.usuarioroles.tabla');
+			$urusuario    = config('csgtcancerbero.usuarioroles.usuarioid');
+			$urrol        = config('csgtcancerbero.usuarioroles.rolid');
 
-				$usuarioroles = DB::table($urtabla)
-					->where($urusuario, Auth::id())
-					->lists($urrol);
-				return (in_array($rolbackdoor, $usuarioroles));
-			}	
-			else {
-				return (Auth::user()->$rolid == $rolbackdoor);
-			}
+			$usuarioroles = DB::table($urtabla)
+				->where($urusuario, Auth::id())
+				->lists($urrol);
+			return (in_array($rolbackdoor, $usuarioroles));
+
 		}
 		else return false;
 	}

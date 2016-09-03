@@ -1,0 +1,12 @@
+<?php namespace {{namespace}}Models\Cancerbero;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Authmodulo extends Model {
+	protected $table      = 'authmodulos';
+	protected $primaryKey = 'moduloid';
+
+	public function authpermisos() {
+		return $this->belongsToMany('{{namespace}}Models\Cancerbero\Authpermiso', 'authmodulopermisos', 'moduloid', 'permisoid');
+	}
+}

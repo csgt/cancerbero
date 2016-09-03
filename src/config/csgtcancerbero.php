@@ -56,8 +56,6 @@ return array(
 	
 	'idencriptado'                   => true,
 
-	'multiplesroles'                 => false,
-
 	'usuarioroles' => [
 		'tabla'     => 'authusuarioroles',
 		'id'        => 'usuariorolid',

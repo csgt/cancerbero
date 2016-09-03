@@ -1,0 +1,13 @@
+@extends('layouts/app')
+
+@section('content')
+	<div class="box box-danger">
+		<div class="box-header">
+			<i class="glyphicon glyphicon-minus-sign text-danger"></i>
+			<h3 class="box-title">Error</h3>
+		</div>
+		<div class="box-body">
+	  	{!! $mensaje !!}
+	  </div>
+	</div>
+@stop

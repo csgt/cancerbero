@@ -1,0 +1,32 @@
+<?php namespace {{namespace}}Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use {{namespace}}Notifications\ResetPasswordNotification;
+use Laravel\Passport\HasApiTokens;
+
+class Authusuario extends Authenticatable {
+
+	use HasApiTokens, Notifiable;
+
+	protected $table      = 'authusuarios';
+	protected $primaryKey = 'usuarioid';
+	protected $hidden     = ['password','remember_token'];
+	protected $guarded    = ['usuarioid'];
+
+	public function sendPasswordResetNotification($token) {
+		$this->notify(new ResetPasswordNotification($token));
+	}
+
+	public function authroles(){
+		return $this->belongsToMany('{{namespace}}Models\Cancerbero\Authrol','authusuarioroles', 'usuarioid','rolid');
+	}
+
+	/*	Método para obtener los roles de un usuario
+	  	Devuelve un array 
+			Auth::user()->getRoles 
+	*/
+	public function getRoles(){
+		return $this->authroles->pluck('rolid')->toArray();
+	}
+}

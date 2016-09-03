@@ -1,6 +1,8 @@
 <?php namespace {{namespace}}Http\Controllers\Cancerbero;
 
-use Illuminate\Routing\Controller, View, Auth, Redirect, Config, Input, DB, Crypt, Exception;
+use Illuminate\Routing\Controller, View, Auth, Redirect, Config, Input, DB, 
+Crypt, Exception, Session,
+Illuminate\Http\Request;
 
 class cancerberoController extends Controller {
 	public function show($id) {
@@ -94,5 +96,12 @@ class cancerberoController extends Controller {
 		return DB::table(config('csgtcancerbero.modulopermisos.tabla'))
 			->select(config('csgtcancerbero.modulopermisos.moduloid').' AS moduloid', config('csgtcancerbero.modulopermisos.permisoid').' AS permisoid')
 			->get();
+	}
+
+	public function showError(Request $request) {
+		$mensaje = Session::get('mensaje');
+		Session::reflash();
+		return view('errors.generic')
+			->with('mensaje', $mensaje);
 	}
 }
