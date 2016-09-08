@@ -63,7 +63,7 @@ return array(
 		'rolid'     => 'rolid'
 	],
 	
-	'template' => 'template.template',
+	'template' => 'layouts.app',
 
 	/*
 	|--------------------------------------------------------------------------

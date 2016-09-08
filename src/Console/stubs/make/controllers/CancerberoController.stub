@@ -57,7 +57,7 @@ class cancerberoController extends Controller {
 			$rolmodulopermisosarray[] = $rmp->modulopermiso;
 
 		return view('csgtcancerbero::rolmodulopermisos')
-			->with('template', config('csgtcancerbero.template','template.template'))
+			->with('template', config('csgtcancerbero.template','layouts.app'))
 			->with('nombrerol', $nombrerol)
 			->with('rolid', Crypt::encrypt($id))
 			->with('modulopermisos', $modulopermisosarray)

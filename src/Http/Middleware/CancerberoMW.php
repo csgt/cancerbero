@@ -5,6 +5,7 @@ use Closure, Auth, Cancerbero, Route, Redirect, Session;
 
 class CancerberoMW {
   public function handle($request, Closure $next) {
+  	//dd($request);
     $rolid = config('csgtcancerbero.rolidusuarios');
 	  if (Auth::guest()) return Redirect::guest(config('csgtcancerbero.rutalogin'));
 	  

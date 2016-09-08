@@ -100,7 +100,8 @@ class Cancerbero {
 
 			$usuarioroles = DB::table($urtabla)
 				->where($urusuario, Auth::id())
-				->lists($urrol);
+				->pluck($urrol)
+				->toArray();
 			return (in_array($rolbackdoor, $usuarioroles));
 
 		}
