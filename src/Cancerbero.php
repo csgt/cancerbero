@@ -38,8 +38,22 @@ class Cancerbero {
 			return Response::json($response);
 		}
 
-		$moduloid  = Authmodulo::where('nombre', $modulo)->first()->moduloid;
-		$permisoid = Authpermiso::where('nombre', $permiso)->first()->permisoid;
+		$authModulo  = Authmodulo::where('nombre', $modulo)->first();
+		if($authModulo === null){
+			$response['error']  = 'No existe ese modulo.';
+			$response['acceso'] = false;
+			return Response::json($response);	
+		}
+		$moduloid = $authModulo->moduloid;
+		
+		$authPermiso = Authpermiso::where('nombre', $permiso)->first();
+		if($authPermiso === null){
+			$response['error']  = 'No existe ese permiso.';
+			$response['acceso'] = false;
+			return Response::json($response);	
+		}
+		$permisoid = $authPermiso->permisoid;
+
 
 		$usuarioroles = Auth::user()->getRoles();
 

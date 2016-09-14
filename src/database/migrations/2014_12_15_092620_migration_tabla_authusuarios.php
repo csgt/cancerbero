@@ -10,7 +10,6 @@ class MigrationTablaAuthusuarios extends Migration {
 			$table->increments('usuarioid');
 			$table->string('email',255);
 			$table->string('password',255);
-			$table->integer('rolid')->unsigned();
 			$table->string('nombre',255);
 			$table->tinyinteger('activo')->default(1);
 			$table->rememberToken();
