@@ -1,7 +1,7 @@
 <?php 
 namespace Csgt\Cancerbero\Http\Middleware;
 
-use Closure, Auth, Cancerbero, Route, Redirect, Session;
+use Closure, Auth, Cancerbero, Route;
 
 class CancerberoMW {
   public function handle($request, Closure $next) {
@@ -13,7 +13,7 @@ class CancerberoMW {
 	  $result     = $resultjson->getData();
 
 	  if(!$result->acceso) {
-	  	Session::flash('mensaje', $result->error . ' (' . Route::currentRouteName() . ')');
+	  	session()->set('mensajeError', $result->error . ' (' . Route::currentRouteName() . ')');
 	  	return redirect('cancerbero/error');
 	  }
 	  return $next($request);

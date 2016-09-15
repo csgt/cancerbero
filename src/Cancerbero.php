@@ -39,7 +39,7 @@ class Cancerbero {
 		}
 
 		$authModulo  = Authmodulo::where('nombre', $modulo)->first();
-		if($authModulo === null){
+		if($authModulo == null){
 			$response['error']  = 'No existe ese modulo.';
 			$response['acceso'] = false;
 			return Response::json($response);	
@@ -47,7 +47,7 @@ class Cancerbero {
 		$moduloid = $authModulo->moduloid;
 		
 		$authPermiso = Authpermiso::where('nombre', $permiso)->first();
-		if($authPermiso === null){
+		if($authPermiso == null){
 			$response['error']  = 'No existe ese permiso.';
 			$response['acceso'] = false;
 			return Response::json($response);	
