@@ -18,8 +18,7 @@ class MigrationTablaAuthusuarios extends Migration {
 			$table->string('googleid',255)->nullable()->default(null);
 			$table->datetime('cambiarpassword')->nullable()->default(null);
 			$table->nullableTimestamps();
-			$table->foreign('rolid')->references('rolid')->on('authroles')->onDelete('restrict')->onUpdate('cascade');
-		
+	
 			$table->unique('email');
 		});
 	}
