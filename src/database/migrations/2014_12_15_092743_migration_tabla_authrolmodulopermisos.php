@@ -12,8 +12,8 @@ class MigrationTablaAuthrolmodulopermisos extends Migration {
 			$table->integer('modulopermisoid')->unsigned();
 			$table->timestamps();
 
-			$table->foreign('rolid')->references('rolid')->on('authroles')->onDelete('restrict')->onUpdate('cascade');
-			$table->foreign('modulopermisoid')->references('modulopermisoid')->on('authmodulopermisos')->onDelete('restrict')->onUpdate('cascade');
+			$table->foreign('rolid')->references('rolid')->on('authroles')->onDelete('cascade')->onUpdate('cascade');
+			$table->foreign('modulopermisoid')->references('modulopermisoid')->on('authmodulopermisos')->onDelete('cascade')->onUpdate('cascade');
 		});
 	}
 
