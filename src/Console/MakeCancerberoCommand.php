@@ -30,6 +30,8 @@ class MakeCancerberoCommand extends Command {
     'Authusuariorol',
   ];
 
+  protected $routesFile = 'routes/core/cancerbero.php';
+
   public function fire() {
     $this->createDirectories();
     $this->exportModels();
@@ -47,9 +49,8 @@ class MakeCancerberoCommand extends Command {
     );
 
     file_put_contents(
-      base_path('routes/web.php'),
-      file_get_contents(__DIR__.'/stubs/make/routes.stub'),
-      FILE_APPEND
+      base_path($routesFile),
+      file_get_contents(__DIR__.'/stubs/make/routes.stub')
     );
     
     $this->info('Vistas & rutas de autenticación generadas correctamente.');
