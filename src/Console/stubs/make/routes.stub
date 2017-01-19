@@ -1,5 +1,3 @@
 <?php 
 //=== CSGTCANCERBERO
-Route::group(['namespace'=>'Cancerbero'], function(){
-	Route::get('cancerbero/error','CancerberoController@showError');	
-});
+	Route::get('error','CancerberoController@showError');	
