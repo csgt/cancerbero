@@ -33,7 +33,7 @@ class CancerberoServiceProvider extends ServiceProvider {
       Console\MakeCancerberoCommand::class
     ]);
 
-    $this->singleton('cancerbero', function($app) {
+    $this->app->singleton('cancerbero', function($app) {
     	return new Cancerbero;
   	});
 	}
