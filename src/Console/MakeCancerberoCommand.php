@@ -61,6 +61,10 @@ class MakeCancerberoCommand extends Command {
     if (! is_dir(app_path('Models/Cancerbero'))) {
       mkdir(app_path('Models/Cancerbero'), 0755, true);
     }
+
+    if (! is_dir(base_path('resources/views/errors'))) {
+      mkdir(base_path('resources/views/errors'), 0755, true);
+    }
   }
 
   protected function exportModels() {
