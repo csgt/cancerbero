@@ -3,10 +3,8 @@
 namespace Csgt\Cancerbero\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class MakeCancerberoCommand extends Command {
-  use AppNamespaceDetectorTrait;
 
   protected $signature = 'make:csgtcancerbero';
 
