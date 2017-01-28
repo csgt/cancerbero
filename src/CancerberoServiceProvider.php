@@ -18,7 +18,7 @@ class CancerberoServiceProvider extends ServiceProvider {
 
     AliasLoader::getInstance()->alias('Cancerbero','Csgt\Cancerbero\Cancerbero');
 
-    $router->middleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
+    $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
 
     $this->publishes([
         __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
