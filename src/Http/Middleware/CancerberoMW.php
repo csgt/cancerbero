@@ -13,7 +13,7 @@ class CancerberoMW {
 	  $result     = $resultjson->getData();
 
 	  if(!$result->acceso) {
-	  	session()->set('mensajeError', $result->error . ' (' . Route::currentRouteName() . ')');
+	  	session()->put('mensajeError', $result->error . ' (' . Route::currentRouteName() . ')');
 	  	return redirect('cancerbero/error');
 	  }
 	  return $next($request);
