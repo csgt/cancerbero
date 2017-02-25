@@ -33,7 +33,7 @@ class Cancerbero {
 			$modulo  = $arr[0];
 
 		if($modulo == '') {
-			if ($aSimple) return false;
+			if ($aSimple===true) return false;
 			$response['error']  = config('csgtcancerbero.errorenrutas');
 			$response['acceso'] = false;
 			return Response::json($response);
@@ -41,7 +41,7 @@ class Cancerbero {
 
 		$authModulo  = Authmodulo::where('nombre', $modulo)->first();
 		if($authModulo == null){
-			if ($aSimple) return false;
+			if ($aSimple===true) return false;
 			$response['error']  = 'No existe ese modulo.';
 			$response['acceso'] = false;
 			return Response::json($response);	
@@ -50,7 +50,7 @@ class Cancerbero {
 		
 		$authPermiso = Authpermiso::where('nombre', $permiso)->first();
 		if($authPermiso == null){
-			if ($aSimple) return false;
+			if ($aSimple===true) return false;
 			$response['error']  = 'No existe ese permiso.';
 			$response['acceso'] = false;
 			return Response::json($response);	
@@ -70,13 +70,13 @@ class Cancerbero {
 		if ($ds) {
 			$cuantos = $ds->authrolmodulopermisos->count();
 			if ($cuantos>0) {
-				if ($aSimple) return false;
+				if ($aSimple===true) return true;
 				$response['error']  = '';
 				$response['acceso'] = true;
 				return Response::json($response);
 			}
 		}
-		if ($aSimple) return true;
+		if ($aSimple===true) return false;
 		$response['error']  = trans('cancerbero.accesodenegado');
 		$response['acceso'] = false;
 		return Response::json($response);
