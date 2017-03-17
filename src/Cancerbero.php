@@ -1,7 +1,7 @@
 <?php 
 
 namespace Csgt\Cancerbero;
-use Config, View, Response, DB, Auth, Redirect;
+use Auth;
 use App\Models\Cancerbero\Authrol;
 use App\Models\Cancerbero\Authmodulo;
 use App\Models\Cancerbero\Authpermiso;
@@ -10,13 +10,15 @@ use App\Models\Cancerbero\Authmodulopermiso;
 class Cancerbero {
 
 	public static function tienePermisos($aRuta, $aRedirect=true, $aSimple=false) {
-		//dd(Auth::guest());
-
+		// dd(Auth::guest(), $aRedirect);
 		if (Auth::guest()){
-			if($aRedirect)
-				return Redirect::guest(config('csgtcancerbero.rutalogin'));
-			else
-				return null;
+			if($aRedirect===true)
+				return redirect()->guest(config('csgtcancerbero.rutalogin'));
+			else {
+				$response['error']  = 'Usuario no autenticado';
+				$response['acceso'] = false;
+				return response()->json($response);
+			}
 		}
 
 		$arr     = explode('.', $aRuta);
@@ -36,7 +38,7 @@ class Cancerbero {
 			if ($aSimple===true) return false;
 			$response['error']  = config('csgtcancerbero.errorenrutas');
 			$response['acceso'] = false;
-			return Response::json($response);
+			return response()->json($response);
 		}
 
 		$authModulo  = Authmodulo::where('nombre', $modulo)->first();
@@ -44,7 +46,7 @@ class Cancerbero {
 			if ($aSimple===true) return false;
 			$response['error']  = 'No existe ese modulo.';
 			$response['acceso'] = false;
-			return Response::json($response);	
+			return response()->json($response);	
 		}
 		$moduloid = $authModulo->moduloid;
 		
@@ -53,7 +55,7 @@ class Cancerbero {
 			if ($aSimple===true) return false;
 			$response['error']  = 'No existe ese permiso.';
 			$response['acceso'] = false;
-			return Response::json($response);	
+			return response()->json($response);	
 		}
 		$permisoid = $authPermiso->permisoid;
 
@@ -73,38 +75,32 @@ class Cancerbero {
 				if ($aSimple===true) return true;
 				$response['error']  = '';
 				$response['acceso'] = true;
-				return Response::json($response);
+				return response()->json($response);
 			}
 		}
 		if ($aSimple===true) return false;
 		$response['error']  = trans('cancerbero.accesodenegado');
 		$response['acceso'] = false;
-		return Response::json($response);
+		return response()->json($response);
 	}
 
 	public static function tienePermisosCrud($aModulo) {
+		$add    = false; 
+		$edit   = false; 
+		$delete = false;
+
 		$addjson = self::tienePermisos($aModulo.'.create', false);
-		if($addjson) {
-			$add     = $addjson->getData();
-			$add     = $add->acceso;
-		}
-		else $add = false;
+		if($addjson)
+			$add     = $addjson->getData()->acceso;
 
 		$editjson = self::tienePermisos($aModulo.'.edit', false);
-		if($editjson) {
-			$edit     = $editjson->getData();
-			$edit     = $edit->acceso;
-		}
-		else $edit = false;
+		if($editjson)
+			$edit     = $editjson->getData()->acceso;
 
 		$deletejson = self::tienePermisos($aModulo.'.destroy', false);
-		if($deletejson) {
-			$delete     = $deletejson->getData();
-			$delete     = $delete->acceso;
-		}
-		else $delete = false;
-
-		return array('add'=>$add, 'edit'=>$edit, 'delete'=>$delete);
+		if($deletejson)
+			$delete     = $deletejson->getData()->acceso;
+		return ['add'=>$add, 'edit'=>$edit, 'delete'=>$delete];
 	}
 
 	public static function isGod() {

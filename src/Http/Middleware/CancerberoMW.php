@@ -5,9 +5,8 @@ use Closure, Auth, Cancerbero, Route;
 
 class CancerberoMW {
   public function handle($request, Closure $next) {
-  	//dd($request);
     $rolid = config('csgtcancerbero.rolidusuarios');
-	  if (Auth::guest()) return Redirect::guest(config('csgtcancerbero.rutalogin'));
+	  if (Auth::guest()) return redirect()->guest(config('csgtcancerbero.rutalogin'));
 	  
 	  $resultjson = Cancerbero::tienePermisos(Route::currentRouteName());
 	  $result     = $resultjson->getData();
