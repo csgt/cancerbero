@@ -105,19 +105,10 @@ class Cancerbero {
 
 	public static function isGod() {
 		if (Auth::check()) {
-			$rolid = config('csgtcancerbero.roles.id');
 			$rolbackdoor = config('csgtcancerbero.rolbackdoor');
-				
-			$urtabla      = config('csgtcancerbero.usuarioroles.tabla');
-			$urusuario    = config('csgtcancerbero.usuarioroles.usuarioid');
-			$urrol        = config('csgtcancerbero.usuarioroles.rolid');
+			$usuarioroles = Auth::user()->getRoles();
 
-			$usuarioroles = DB::table($urtabla)
-				->where($urusuario, Auth::id())
-				->pluck($urrol)
-				->toArray();
 			return (in_array($rolbackdoor, $usuarioroles));
-
 		}
 		else return false;
 	}
