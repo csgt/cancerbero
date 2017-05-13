@@ -99,8 +99,6 @@ class cancerberoController extends Controller {
 	}
 
 	public function showError(Request $request) {
-		$mensaje = Session::get('mensajeError');
-		return view('errors.generic')
-			->with('mensaje', $mensaje);
+		abort(401, $mensaje);
 	}
 }

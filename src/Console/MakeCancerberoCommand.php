@@ -12,6 +12,7 @@ class MakeCancerberoCommand extends Command {
 
   protected $views = [
     'errors/generic.stub' => 'errors/generic.blade.php',
+    'errors/404.stub' => 'errors/404.blade.php',
   ];
 
   protected $langs = [
