@@ -17,6 +17,7 @@ class MigrationTablaAuthusuarios extends Migration {
 			$table->string('facebookid',255)->nullable()->default(null);
 			$table->string('googleid',255)->nullable()->default(null);
 			$table->datetime('cambiarpassword')->nullable()->default(null);
+			$table->binary('avatar')->nullable()->default(null);
 			$table->nullableTimestamps();
 	
 			$table->unique('email');
