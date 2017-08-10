@@ -29,4 +29,13 @@ class Authusuario extends Authenticatable {
 	public function getRoles(){
 		return $this->authroles->pluck('rolid')->toArray();
 	}
+
+	public function getAvatarAttribute($value) {
+		if ($value) {
+			return $value;
+		}
+		else {
+			return base64_encode(file_get_contents(public_path() . '/images/user-generic.jpg'));
+		}
+	}
 }
