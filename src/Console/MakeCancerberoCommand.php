@@ -31,7 +31,7 @@ class MakeCancerberoCommand extends Command {
 
   protected $routesFile = 'routes/core/cancerbero.php';
 
-  public function fire() {
+  public function handle() {
     $this->createDirectories();
     $this->exportModels();
     $this->exportLangs();
@@ -51,7 +51,7 @@ class MakeCancerberoCommand extends Command {
       base_path($this->routesFile),
       file_get_contents(__DIR__.'/stubs/make/routes.stub')
     );
-    
+
     $this->info('Vistas & rutas de autenticación generadas correctamente.');
   }
 
@@ -94,7 +94,7 @@ class MakeCancerberoCommand extends Command {
       );
     }
   }
- 
+
   protected function compileControllerStub($aPath) {
     return str_replace(
       '{{namespace}}',
