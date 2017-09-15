@@ -3,11 +3,10 @@
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use {{namespace}}Notifications\ResetPasswordNotification;
-use Laravel\Passport\HasApiTokens;
 
 class Authusuario extends Authenticatable {
 
-	use HasApiTokens, Notifiable;
+	use Notifiable;
 
 	protected $table      = 'authusuarios';
 	protected $primaryKey = 'usuarioid';
@@ -23,8 +22,8 @@ class Authusuario extends Authenticatable {
 	}
 
 	/*	Método para obtener los roles de un usuario
-	  	Devuelve un array 
-			Auth::user()->getRoles 
+	  	Devuelve un array
+			Auth::user()->getRoles
 	*/
 	public function getRoles(){
 		return $this->authroles->pluck('rolid')->toArray();
