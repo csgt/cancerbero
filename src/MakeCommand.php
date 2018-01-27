@@ -1,5 +1,7 @@
 <?php
 
+namespace Csgt\Cancerbero;
+
 trait MakeCommand
 {
     public function createDirectories($aDirectories)
