@@ -21,7 +21,8 @@ class MakeCancerberoCommand extends Command
     ];
 
     protected $directories = [
-        'App/Models/Auth',
+        'app/Models/Auth',
+        'resources/lang/es',
     ];
 
     protected $models = [
