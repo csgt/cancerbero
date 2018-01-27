@@ -20,5 +20,12 @@
       "Csgt\\Cancerbero\\": "src"
     }
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Csgt\\Cancerbero\\CancerberoServiceProvider"
+      ]
+    }
+  }
 }
