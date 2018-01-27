@@ -1,9 +1,0 @@
-<?php namespace {{namespace}}Models\Cancerbero;
-
-use Illuminate\Database\Eloquent\Model;
-
-class Authrolmodulopermiso extends Model {
-	protected $table      = 'authrolmodulopermisos';
-	protected $primaryKey = 'rolmodulopermisoid';
-
-}

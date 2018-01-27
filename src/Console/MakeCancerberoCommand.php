@@ -3,115 +3,43 @@
 namespace Csgt\Cancerbero\Console;
 
 use Illuminate\Console\Command;
+use Csgt\Cancerbero\MakeCommand;
 
-class MakeCancerberoCommand extends Command {
+class MakeCancerberoCommand extends Command
+{
+    use MakeCommand;
 
-  protected $signature = 'make:csgtcancerbero';
+    protected $signature = 'make:csgtcancerbero';
 
-  protected $description = 'Vistas & rutas para cancerbero';
+    protected $description = 'Vistas & rutas para cancerbero';
 
-  protected $views = [
-    'errors/generic.stub' => 'errors/generic.blade.php',
-    'errors/404.stub' => 'errors/404.blade.php',
-  ];
+    protected $views = [];
 
-  protected $langs = [
-    'es/cancerbero.stub' => 'es/cancerbero.php',
-    'en/cancerbero.stub' => 'en/cancerbero.php',
-  ];
+    protected $langs = [
+        'es/cancerbero.stub' => 'es/cancerbero.php',
+        'en/cancerbero.stub' => 'en/cancerbero.php',
+    ];
 
-  protected $models = [
-    'Authmodulo',
-    'Authmodulopermiso',
-    'Authpermiso',
-    'Authrol',
-    'Authrolmodulopermiso',
-    'Authusuariorol',
-  ];
+    protected $directories = [
+        'App/Models/Auth',
+    ];
 
-  protected $routesFile = 'routes/core/cancerbero.php';
+    protected $models = [
+        'Auth/User',
+        'Auth/Module',
+        'Auth/ModulePermission',
+        'Auth/Permission',
+        'Auth/Role',
+        'Auth/RoleModulePermission',
+        'Auth/UserRole',
+    ];
 
-  public function handle() {
-    $this->createDirectories();
-    $this->exportModels();
-    $this->exportLangs();
-    $this->exportViews();
-
-    file_put_contents(
-      app_path('Models/Authusuario.php'),
-      $this->compileModelStub('Authusuario')
-    );
-
-    file_put_contents(
-      app_path('Http/Controllers/Cancerbero/CancerberoController.php'),
-      $this->compileControllerStub('CancerberoController.stub')
-    );
-
-    file_put_contents(
-      base_path($this->routesFile),
-      file_get_contents(__DIR__.'/stubs/make/routes.stub')
-    );
-
-    $this->info('Vistas & rutas de autenticación generadas correctamente.');
-  }
-
-  protected function createDirectories() {
-    if (! is_dir(app_path('Http/Controllers/Cancerbero'))) {
-      mkdir(app_path('Http/Controllers/Cancerbero'), 0755, true);
+    public function handle()
+    {
+        $this->createDirectories($this->directories);
+        $this->exportModels($this->models);
+        $this->exportLangs($this->langs);
+        $this->exportViews($this->views);
+        $this->info('Vistas & rutas de autenticación generadas correctamente.');
     }
-    if (! is_dir(app_path('Models/Cancerbero'))) {
-      mkdir(app_path('Models/Cancerbero'), 0755, true);
-    }
-
-    if (! is_dir(base_path('resources/views/errors'))) {
-      mkdir(base_path('resources/views/errors'), 0755, true);
-    }
-  }
-
-  protected function exportModels() {
-    foreach ($this->models as $modelName) {
-      file_put_contents(
-      app_path('Models/Cancerbero/' . $modelName . '.php'),
-      $this->compileModelStub($modelName)
-    );
-    }
-  }
-
-  protected function exportViews() {
-    foreach ($this->views as $key => $value) {
-      copy(
-        __DIR__.'/stubs/make/views/'.$key,
-        base_path('resources/views/'.$value)
-      );
-    }
-  }
-
-  protected function exportLangs() {
-    foreach ($this->langs as $key => $value) {
-      copy(
-        __DIR__.'/stubs/make/lang/'.$key,
-        base_path('resources/lang/'.$value)
-      );
-    }
-  }
-
-  protected function compileControllerStub($aPath) {
-    return str_replace(
-      '{{namespace}}',
-      $this->getAppNamespace(),
-      file_get_contents(__DIR__.'/stubs/make/controllers/' . $aPath)
-    );
-  }
-
-  protected function compileModelStub($aModel, $aExtension = "stub") {
-    return str_replace(
-      '{{namespace}}',
-      $this->getAppNamespace(),
-      file_get_contents(__DIR__.'/stubs/make/models/' . $aModel . '.' . $aExtension)
-    );
-  }
-
-  protected function getAppNamespace(){
-    return 'App\\';
-  }
 }

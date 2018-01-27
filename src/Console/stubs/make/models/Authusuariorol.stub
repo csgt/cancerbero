@@ -1,9 +1,0 @@
-<?php namespace {{namespace}}Models\Cancerbero;
-
-use Illuminate\Database\Eloquent\Model;
-
-class Authusuariorol extends Model {
-	protected $table      = 'authusuarioroles';
-	protected $primaryKey = 'usuariorolid';
-
-}

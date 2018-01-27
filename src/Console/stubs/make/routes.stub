@@ -1,3 +1,0 @@
-<?php 
-//=== CSGTCANCERBERO
-	Route::get('error','CancerberoController@showError');	
