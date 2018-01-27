@@ -12,11 +12,11 @@ class CsgtModule
     public $description = null;
     public $module = null;
     public $menuOrder = 0;
-    public $permissions = ALL;
+    public $permissions = self::ALL;
     public $icon = null;
     public $parentModule = null;
 
-    public function __construct($aName, $aDescription, $aModule, $aMenuOrder, $aIcon = null, $aParentModule = null, $aPermissions = ALL)
+    public function __construct($aName, $aDescription, $aModule, $aMenuOrder, $aIcon = null, $aParentModule = null, $aPermissions = self::ALL)
     {
         $this->name         = $aName;
         $this->description  = $aDescription;

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MigrationCreateTablePasswordHistories extends Migration
+class MigrationCreatePasswordHistoriesTable extends Migration
 {
     public function up()
     {
