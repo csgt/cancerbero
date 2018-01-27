@@ -27,7 +27,7 @@ trait MakeCommand
     {
         foreach ($aViews as $key => $value) {
             copy(
-                __DIR__.'/stubs/make/views/'.$key,
+                __DIR__.'/Console/stubs/make/views/'.$key,
                 base_path('resources/views/'.$value)
             );
         }
@@ -37,7 +37,7 @@ trait MakeCommand
     {
         foreach ($aLangs as $key => $value) {
             copy(
-                __DIR__.'/stubs/make/lang/'.$key,
+                __DIR__.'/Console/stubs/make/lang/'.$key,
                 base_path('resources/lang/'.$value)
             );
         }
@@ -48,7 +48,7 @@ trait MakeCommand
         return str_replace(
             '{{namespace}}',
             $this->getAppNamespace(),
-            file_get_contents(__DIR__.'/stubs/make/controllers/' . $aPath)
+            file_get_contents(__DIR__.'/Console/stubs/make/controllers/' . $aPath)
         );
     }
 
@@ -57,7 +57,7 @@ trait MakeCommand
         return str_replace(
             '{{namespace}}',
             $this->getAppNamespace(),
-            file_get_contents(__DIR__.'/stubs/make/models/' . $aModel . '.' . $aExtension)
+            file_get_contents(__DIR__.'/Console/stubs/make/models/' . $aModel . '.' . $aExtension)
         );
     }
 
