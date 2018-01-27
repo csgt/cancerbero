@@ -4,41 +4,44 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 
-class CancerberoServiceProvider extends ServiceProvider {
+class CancerberoServiceProvider extends ServiceProvider
+{
+    protected $defer = false;
 
-	protected $defer = false;
+    public function boot(Router $router)
+    {
+        $this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
+        $this->loadViewsFrom(__DIR__ . '/resources/views/', 'csgtcancerbero');
 
-	public function boot(Router $router) {
-    $this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
-    $this->loadViewsFrom(__DIR__ . '/resources/views/','csgtcancerbero');
+        if (!$this->app->routesAreCached()) {
+            require __DIR__.'/Http/routes.php';
+        }
 
-    if (!$this->app->routesAreCached()) {
-      require __DIR__.'/Http/routes.php';
-    }
+        AliasLoader::getInstance()->alias('Cancerbero', 'Csgt\Cancerbero\Cancerbero');
 
-    AliasLoader::getInstance()->alias('Cancerbero','Csgt\Cancerbero\Cancerbero');
+        $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
 
-    $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
-
-    $this->publishes([
+        $this->publishes([
         __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
     ], 'migrations');
-    $this->publishes([
+        $this->publishes([
       __DIR__.'/config/csgtcancerbero.php' => config_path('csgtcancerbero.php'),
     ], 'config');
-	}
+    }
 
-	public function register() {
-    $this->commands([
+    public function register()
+    {
+        $this->commands([
       Console\MakeCancerberoCommand::class
     ]);
 
-    $this->app->singleton('cancerbero', function($app) {
-    	return new Cancerbero;
-  	});
-	}
+        $this->app->singleton('cancerbero', function ($app) {
+            return new Cancerbero;
+        });
+    }
 
-	public function provides() {
-		return array('cancerbero');
-	}
+    public function provides()
+    {
+        return ['cancerbero'];
+    }
 }
