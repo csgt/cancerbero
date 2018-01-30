@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends(config('csgtcancerbero.template'))
 
 @section('content')
 	<div class="box box-danger">

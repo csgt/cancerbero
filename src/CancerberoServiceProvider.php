@@ -22,18 +22,18 @@ class CancerberoServiceProvider extends ServiceProvider
         $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
 
         $this->publishes([
-        __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
-    ], 'migrations');
+            __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
+        ], 'migrations');
         $this->publishes([
-      __DIR__.'/config/csgtcancerbero.php' => config_path('csgtcancerbero.php'),
-    ], 'config');
+            __DIR__.'/config/csgtcancerbero.php' => config_path('csgtcancerbero.php'),
+        ], 'config');
     }
 
     public function register()
     {
         $this->commands([
-      Console\MakeCancerberoCommand::class
-    ]);
+            Console\MakeCancerberoCommand::class
+        ]);
 
         $this->app->singleton('cancerbero', function ($app) {
             return new Cancerbero;
