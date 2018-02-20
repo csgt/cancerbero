@@ -13,10 +13,6 @@ class CancerberoServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
         $this->loadViewsFrom(__DIR__ . '/resources/views/', 'csgtcancerbero');
 
-        if (!$this->app->routesAreCached()) {
-            require __DIR__.'/Http/routes.php';
-        }
-
         AliasLoader::getInstance()->alias('Cancerbero', 'Csgt\Cancerbero\Cancerbero');
 
         $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
