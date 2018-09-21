@@ -1,11 +1,7 @@
 <?php
-
 namespace Csgt\Cancerbero;
 
 use Auth;
-use App\Models\Auth\Module;
-use App\Models\Auth\Permission;
-use App\Models\Auth\ModulePermission;
 use App\Models\Auth\RoleModulePermission;
 
 class Cancerbero
@@ -13,23 +9,26 @@ class Cancerbero
 
     public static function can($aRouteName)
     {
-        $roleIds = Auth::user()->roleIds();
+        $roleIds    = Auth::user()->roleIds();
         $routeArray = collect(explode('.', $aRouteName));
 
         $permissionName = $routeArray->last();
 
         $moduleName = implode('.', $routeArray->take($routeArray->count() - 1)->toArray());
 
-        $rolModulePermission = RoleModulePermission::leftJoin('module_permissions', 'module_permission_id', '=', 'id')
-            ->leftJoin('roles', 'role_id', '=', 'id')
-            ->leftJoin('modules', 'module_permissions.module_id', '=', 'id')
-            ->leftJoin('permissions', 'module_permissions.permission_id', '=', 'id')
-            ->whereIn('roles.id', $roleIds)
-            ->where('modules.name', $moduleName)
-            ->where('permission.name', $permissionName)
+        $roleModulePermission = RoleModulePermission::select('id')
+            ->whereHas('role', function ($query) use ($roleIds) {
+                $query->whereIn('id', $roleIds);
+            })
+            ->whereHas('module_permission.module', function ($query) use ($moduleName) {
+                $query->where('name', $moduleName);
+            })
+            ->whereHas('module_permission.permission', function ($query) use ($permissionName) {
+                $query->where('name', $permissionName);
+            })
             ->first();
 
-        return (!$rolModulePermission ? false : true);
+        return ($roleModulePermission ? true : false);
 
     }
 
@@ -37,7 +36,7 @@ class Cancerbero
     {
         $permissions = collect(['add', 'edit', 'delete']);
 
-        return $permissions->mapWithKeys(function($permission) use $aModule{
+        return $permissions->mapWithKeys(function ($permission) use ($aModule) {
             return [$permission => self::can($aModule . '.' . $permission)];
         });
     }
@@ -45,7 +44,7 @@ class Cancerbero
     public static function isGod()
     {
         if (Auth::check()) {
-            $rolbackdoor = self::godRole();
+            $rolbackdoor  = self::godRole();
             $usuarioroles = Auth::user()->getRoles();
 
             return (in_array($rolbackdoor, $usuarioroles));

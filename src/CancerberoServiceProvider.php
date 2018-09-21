@@ -1,8 +1,9 @@
-<?php namespace Csgt\Cancerbero;
+<?php
+namespace Csgt\Cancerbero;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
 
 class CancerberoServiceProvider extends ServiceProvider
 {
@@ -18,17 +19,17 @@ class CancerberoServiceProvider extends ServiceProvider
         $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
 
         $this->publishes([
-            __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
+            __DIR__ . '/database/migrations' => $this->app->databasePath() . '/migrations',
         ], 'migrations');
         $this->publishes([
-            __DIR__.'/config/csgtcancerbero.php' => config_path('csgtcancerbero.php'),
+            __DIR__ . '/config/csgtcancerbero.php' => config_path('csgtcancerbero.php'),
         ], 'config');
     }
 
     public function register()
     {
         $this->commands([
-            Console\MakeCancerberoCommand::class
+            Console\MakeCancerberoCommand::class,
         ]);
 
         $this->app->singleton('cancerbero', function ($app) {

@@ -1,5 +1,4 @@
 <?php
-
 namespace Csgt\Cancerbero;
 
 trait MakeCommand
@@ -7,7 +6,7 @@ trait MakeCommand
     public function createDirectories($aDirectories)
     {
         foreach ($aDirectories as $directory) {
-            if (! is_dir($directory)) {
+            if (!is_dir($directory)) {
                 mkdir($directory, 0755, true);
             }
         }
@@ -17,8 +16,8 @@ trait MakeCommand
     {
         foreach ($aModels as $modelName) {
             file_put_contents(
-              app_path('Models/' . $modelName . '.php'),
-              $this->compileModelStub($modelName)
+                app_path('Models/' . $modelName . '.php'),
+                $this->compileModelStub($modelName)
             );
         }
     }
@@ -27,8 +26,8 @@ trait MakeCommand
     {
         foreach ($aViews as $key => $value) {
             copy(
-                __DIR__.'/Console/stubs/make/views/'.$key,
-                base_path('resources/views/'.$value)
+                __DIR__ . '/Console/stubs/make/views/' . $key,
+                base_path('resources/views/' . $value)
             );
         }
     }
@@ -37,8 +36,8 @@ trait MakeCommand
     {
         foreach ($aLangs as $key => $value) {
             copy(
-                __DIR__.'/Console/stubs/make/lang/'.$key,
-                base_path('resources/lang/'.$value)
+                __DIR__ . '/Console/stubs/make/lang/' . $key,
+                base_path('resources/lang/' . $value)
             );
         }
     }
@@ -48,7 +47,7 @@ trait MakeCommand
         return str_replace(
             '{{namespace}}',
             $this->getAppNamespace(),
-            file_get_contents(__DIR__.'/Console/stubs/make/controllers/' . $aPath)
+            file_get_contents(__DIR__ . '/Console/stubs/make/controllers/' . $aPath)
         );
     }
 
@@ -57,7 +56,7 @@ trait MakeCommand
         return str_replace(
             '{{namespace}}',
             $this->getAppNamespace(),
-            file_get_contents(__DIR__.'/Console/stubs/make/models/' . $aModel . '.' . $aExtension)
+            file_get_contents(__DIR__ . '/Console/stubs/make/models/' . $aModel . '.' . $aExtension)
         );
     }
 

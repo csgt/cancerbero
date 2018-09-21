@@ -1,18 +1,20 @@
 <?php
 namespace Csgt\Cancerbero\Http\Middleware;
 
-use Closure, Auth, Cancerbero, Route;
+use Route;
+use Closure;
+use Cancerbero;
 
 class CancerberoMW
 {
-  public function handle($request, Closure $next)
-  {
-	  $resultjson = Cancerbero::tienePermisos(Route::currentRouteName());
-	  $result     = $resultjson->getData();
+    public function handle($request, Closure $next)
+    {
+        $can = Cancerbero::can(Route::currentRouteName());
 
-	  if(!$result->acceso) {
-	  	abort(401, $result->error . ' (' . Route::currentRouteName() . ')');
-	  }
-	  return $next($request);
-	}
+        if (!$can) {
+            abort(401, ' (' . Route::currentRouteName() . ')');
+        }
+
+        return $next($request);
+    }
 }
