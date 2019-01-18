@@ -5,7 +5,7 @@ class CsgtModule
 {
     const REPORT = [1, 3];
     const INDEX  = [1];
-    const ALL    = [1, 2, 3, 4, 5, 6, 7];
+    const ALL    = [1, 2, 3, 4, 5, 6, 7, 8];
 
     public $name         = null;
     public $description  = null;

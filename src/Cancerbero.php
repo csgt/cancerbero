@@ -34,7 +34,7 @@ class Cancerbero
 
     public static function crudPermissions($aModule)
     {
-        $permissions = collect(['add', 'edit', 'delete']);
+        $permissions = collect(['create', 'update', 'destroy']);
 
         return $permissions->mapWithKeys(function ($permission) use ($aModule) {
             return [$permission => self::can($aModule . '.' . $permission)];
@@ -45,7 +45,7 @@ class Cancerbero
     {
         if (Auth::check()) {
             $rolbackdoor  = self::godRole();
-            $usuarioroles = Auth::user()->getRoles();
+            $usuarioroles = Auth::user()->roleIds();
 
             return (in_array($rolbackdoor, $usuarioroles));
         } else {
