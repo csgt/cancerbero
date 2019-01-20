@@ -12,7 +12,6 @@ class CancerberoServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
-        $this->loadViewsFrom(__DIR__ . '/resources/views/', 'csgtcancerbero');
 
         AliasLoader::getInstance()->alias('Cancerbero', 'Csgt\Cancerbero\Cancerbero');
 

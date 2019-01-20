@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MigrationCreateModulesTable extends Migration
+class CreateModulesTable extends Migration
 {
     public function up()
     {
