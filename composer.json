@@ -1,21 +1,17 @@
 {
     "name": "csgt/cancerbero",
-    "description": "",
+    "description": "Cancerbero",
     "authors": [
         {
-            "name": "CS",
-            "email": "software@cs.com.gt"
+            "name": "Softlogic",
+            "email": "software@softlogic.com.gt"
         }
     ],
     "require": {
         "php": ">=7.0"
     },
-    "require-dev": {
-        "phpunit/phpunit": "~6.0"
-    },
     "autoload": {
         "classmap": [
-            "src/Http/Controllers",
             "src/Http/Middleware"
         ],
         "psr-4": {

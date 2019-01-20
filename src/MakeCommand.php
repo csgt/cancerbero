@@ -42,15 +42,6 @@ trait MakeCommand
         }
     }
 
-    public function compileControllerStub($aPath)
-    {
-        return str_replace(
-            '{{namespace}}',
-            $this->getAppNamespace(),
-            file_get_contents(__DIR__ . '/Console/stubs/make/controllers/' . $aPath)
-        );
-    }
-
     public function compileModelStub($aModel, $aExtension = "stub")
     {
         return str_replace(
