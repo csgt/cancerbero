@@ -1,19 +1,7 @@
 <?php
-
 namespace {{namespace}}Models\Auth;
 
-use Illuminate\Database\Eloquent\Model;
+use Csgt\Cancerbero\Models\RoleModulePermission as CsgtRoleModulePermission;
 
-class RoleModulePermission extends Model {
-    protected $guarded = ['id'];
-
-    public function module_permission()
-    {
-        return $this->belongsTo(ModulePermission::class);
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
+class RoleModulePermission extends CsgtRoleModulePermission {
 }

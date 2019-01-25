@@ -1,9 +1,8 @@
 <?php
-
 namespace {{namespace}}Models\Auth;
 
-use Illuminate\Database\Eloquent\Model;
+use Csgt\Cancerbero\Models\UserRole as CsgtUserRole;
 
-class UserRole extends Model {
-    protected $guarded    = ['id'];
+class UserRole extends CsgtUserRole {
+
 }

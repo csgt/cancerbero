@@ -1,11 +1,7 @@
 <?php
-
 namespace {{namespace}}Models\Auth;
 
-use Illuminate\Database\Eloquent\Model;
+use Csgt\Cancerbero\Models\Permission as CsgtPermission;
 
-class Permission extends Model {
-    protected $guarded = ['id'];
-    public $timestamps = false;
-
+class Permission extends CsgtPermission {
 }

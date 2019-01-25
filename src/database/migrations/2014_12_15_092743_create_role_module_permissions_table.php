@@ -13,6 +13,8 @@ class CreateRoleModulePermissionsTable extends Migration
             $table->integer('module_permission_id')->unsigned();
             $table->timestamps();
 
+            $table->unique(['role_id', 'module_permission_id']);
+
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('module_permission_id')->references('id')->on('module_permissions')->onDelete('cascade')->onUpdate('cascade');
         });
