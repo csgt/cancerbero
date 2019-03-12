@@ -2,6 +2,7 @@
 namespace Csgt\Cancerbero;
 
 use Auth;
+use App\Models\Auth\Permission;
 use App\Models\Auth\RoleModulePermission;
 
 class Cancerbero
@@ -14,6 +15,9 @@ class Cancerbero
 
         $permissionName = $routeArray->last();
 
+        $p  = Permission::where('name', $permissionName)->first();
+        $ps = Permission::where('id', $p->id)->orWhere('id', $p->parent_id)->pluck('id');
+
         $moduleName = implode('.', $routeArray->take($routeArray->count() - 1)->toArray());
 
         $roleModulePermission = RoleModulePermission::select('id')
@@ -23,8 +27,8 @@ class Cancerbero
             ->whereHas('module_permission.module', function ($query) use ($moduleName) {
                 $query->where('name', $moduleName);
             })
-            ->whereHas('module_permission.permission', function ($query) use ($permissionName) {
-                $query->where('name', $permissionName);
+            ->whereHas('module_permission.permission', function ($query) use ($ps) {
+                $query->whereIn('id', $ps);
             })
             ->first();
 
