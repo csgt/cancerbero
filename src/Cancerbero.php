@@ -15,7 +15,11 @@ class Cancerbero
 
         $permissionName = $routeArray->last();
 
-        $p  = Permission::where('name', $permissionName)->first();
+        $p = Permission::where('name', $permissionName)->first();
+        if (!$p) {
+            return false;
+        }
+
         $ps = Permission::where('id', $p->id)->orWhere('id', $p->parent_id)->pluck('id');
 
         $moduleName = implode('.', $routeArray->take($routeArray->count() - 1)->toArray());
