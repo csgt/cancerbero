@@ -1,11 +1,7 @@
 <?php
-
 namespace Csgt\Cancerbero;
 
 use Auth;
-use App\Models\Auth\Module;
-use App\Models\Auth\Permission;
-use App\Models\Auth\ModulePermission;
 use App\Models\Auth\RoleModulePermission;
 
 class Cancerbero
@@ -13,7 +9,7 @@ class Cancerbero
 
     public static function can($aRouteName)
     {
-        $roleIds = Auth::user()->roleIds();
+        $roleIds    = Auth::user()->roleIds();
         $routeArray = collect(explode('.', $aRouteName));
 
         $permissionName = $routeArray->last();
@@ -37,7 +33,7 @@ class Cancerbero
     {
         $permissions = collect(['add', 'edit', 'delete']);
 
-        return $permissions->mapWithKeys(function($permission) use $aModule{
+        return $permissions->mapWithKeys(function ($permission) use ($aModule) {
             return [$permission => self::can($aModule . '.' . $permission)];
         });
     }
@@ -45,7 +41,7 @@ class Cancerbero
     public static function isGod()
     {
         if (Auth::check()) {
-            $rolbackdoor = self::godRole();
+            $rolbackdoor  = self::godRole();
             $usuarioroles = Auth::user()->getRoles();
 
             return (in_array($rolbackdoor, $usuarioroles));
