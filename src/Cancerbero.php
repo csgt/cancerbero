@@ -9,9 +9,9 @@ use Response;
 
 class Cancerbero
 {
-    public function can($aRuta)
+    public static function can($aRuta)
     {
-        return $this->tienePermisos($aRuta, false, false);
+        return self::tienePermisos($aRuta, false, false);
 
     }
 
