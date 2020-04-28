@@ -77,7 +77,7 @@ class Cancerbero
                 ->where('m.' . $modulosname, $modulo)
                 ->where('p.' . $permisosname, $permiso)
                 ->where('rmp.' . $colrolid, $ur)
-                ->pluck($rmppk);
+                ->value($rmppk);
 
             if ($rolmodulopermisoid != '') {
                 if ($aJson) {
