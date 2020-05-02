@@ -10,6 +10,10 @@ class Cancerbero
 
     public static function can($aRouteName)
     {
+        if (Auth::guest()) {
+            return false;
+        }
+
         $roleIds    = Auth::user()->roleIds();
         $routeArray = collect(explode('.', $aRouteName));
 
