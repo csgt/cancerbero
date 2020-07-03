@@ -20,9 +20,6 @@ class CancerberoServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/database/migrations' => $this->app->databasePath() . '/migrations',
         ], 'migrations');
-        $this->publishes([
-            __DIR__ . '/config/csgtcancerbero.php' => config_path('csgtcancerbero.php'),
-        ], 'config');
     }
 
     public function register()

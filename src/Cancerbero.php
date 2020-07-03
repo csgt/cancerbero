@@ -7,7 +7,6 @@ use App\Models\Auth\RoleModulePermission;
 
 class Cancerbero
 {
-
     public static function can($aRouteName)
     {
         if (Auth::guest()) {

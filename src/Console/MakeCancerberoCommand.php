@@ -1,5 +1,4 @@
 <?php
-
 namespace Csgt\Cancerbero\Console;
 
 use Illuminate\Console\Command;
@@ -11,18 +10,14 @@ class MakeCancerberoCommand extends Command
 
     protected $signature = 'make:csgtcancerbero';
 
-    protected $description = 'Vistas & rutas para cancerbero';
+    protected $description = 'Cancerbero views and models';
 
     protected $views = [];
 
-    protected $langs = [
-        'es/cancerbero.stub' => 'es/cancerbero.php',
-        'en/cancerbero.stub' => 'en/cancerbero.php',
-    ];
+    protected $langs = [];
 
     protected $directories = [
         'app/Models/Auth',
-        'resources/lang/es',
     ];
 
     protected $models = [
@@ -41,6 +36,6 @@ class MakeCancerberoCommand extends Command
         $this->exportModels($this->models);
         $this->exportLangs($this->langs);
         $this->exportViews($this->views);
-        $this->info('Vistas & rutas de autenticación generadas correctamente.');
+        $this->info('Authorization models and routes published.');
     }
 }
