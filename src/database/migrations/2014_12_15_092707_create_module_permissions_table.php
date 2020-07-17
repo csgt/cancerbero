@@ -8,9 +8,9 @@ class CreateModulePermissionsTable extends Migration
     public function up()
     {
         Schema::create('module_permissions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('module_id')->unsigned();
-            $table->integer('permission_id')->unsigned();
+            $table->id();
+            $table->unsignedBiginteger('module_id');
+            $table->unsignedBiginteger('permission_id');
 
             $table->unique(['module_id', 'permission_id']);
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade')->onUpdate('cascade');

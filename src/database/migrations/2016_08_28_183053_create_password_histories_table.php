@@ -8,8 +8,8 @@ class CreatePasswordHistoriesTable extends Migration
     public function up()
     {
         Schema::create('password_histories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('password');
             $table->timestamps();
 

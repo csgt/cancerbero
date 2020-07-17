@@ -8,8 +8,8 @@ class CreatePermissionsTable extends Migration
     public function up()
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('parent_id')->nullable();
+            $table->id();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('name', 50);
             $table->string('description', 50);
 
