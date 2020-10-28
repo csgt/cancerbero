@@ -1,112 +1,145 @@
-<?php 
-
+<?php
 namespace Csgt\Cancerbero;
-use Config, View, Response, DB, Auth, Redirect;
 
-class Cancerbero {
+use DB;
+use Auth;
+use Config;
+use Redirect;
+use Response;
 
-	public static function tienePermisos($aRuta, $aRedirect=true) {
-		
-		if (Auth::guest()){
-			if($aRedirect)
-				return Redirect::guest(Config::get('cancerbero::rutalogin'));
-			else
-				return null;
-		}
+class Cancerbero
+{
 
-		$arr     = explode('.', $aRuta);
-		$modulo  = 'index';
-		$permiso = 'index';
+    public static function can($aRouteName)
+    {
+        $res = self::tienePermisos($aRouteName, false);
+        if (!$res) {
+            return false;
+        }
 
-		if(count($arr) >= 2) {
-			$permiso = $arr[count($arr)-1];
-			array_pop($arr);
-			$modulo  = implode('.', $arr);
-		}
+        return $res->getData()->acceso;
+    }
 
-		elseif(count($arr == 1)) 
-			$modulo  = $arr[0];
+    public static function tienePermisos($aRuta, $aRedirect = true)
+    {
 
-		if($modulo == '') {
-			$response['error']  = Config::get('cancerbero::errorenrutas');
-			$response['acceso'] = false;
-			return Response::json($response);
-		}
+        if (Auth::guest()) {
+            if ($aRedirect) {
+                return Redirect::guest(Config::get('cancerbero::rutalogin'));
+            } else {
+                return null;
+            }
 
-		$modulostbl   = Config::get('cancerbero::modulos.tabla');
-		$permisostbl  = Config::get('cancerbero::permisos.tabla');
-		$mptabl       = Config::get('cancerbero::modulopermisos.tabla');
-		$modulospk    = Config::get('cancerbero::modulos.id');
-		$permisospk   = Config::get('cancerbero::permisos.id');
-		$modulosname  = Config::get('cancerbero::modulos.nombre');
-		$permisosname = Config::get('cancerbero::permisos.nombre');
-		$mppk         = Config::get('cancerbero::modulopermisos.id');
-		$rmppk        = Config::get('cancerbero::rolmodulopermisos.id');
-		$colrolid     = Config::get('cancerbero::rolidusuarios');
-		$urtabla      = Config::get('cancerbero::usuarioroles.tabla');
-		$urusuario    = Config::get('cancerbero::usuarioroles.usuarioid');
-		$urrol        = Config::get('cancerbero::usuarioroles.rolid');
+        }
 
-		$usuarioroles = array();
-		if(Config::get('cancerbero::multiplesroles')) {
-			$usuarioroles = DB::table($urtabla)
-				->where($urusuario, Auth::id())
-				->lists($urrol);
-		}
+        $arr     = explode('.', $aRuta);
+        $modulo  = 'index';
+        $permiso = 'index';
 
-		else
-			$usuarioroles[] = Auth::user()->$colrolid;
+        if (count($arr) >= 2) {
+            $permiso = $arr[count($arr) - 1];
+            array_pop($arr);
+            $modulo = implode('.', $arr);
+        } elseif (count($arr == 1)) {
+            $modulo = $arr[0];
+        }
 
-		foreach($usuarioroles as $ur) {
-			$rolmodulopermisoid = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla').' AS rmp')
-				->leftJoin($mptabl.' AS mp', 'mp.'.$mppk, '=', 'rmp.'.$mppk)
-				->leftJoin($modulostbl.' AS m', 'm.'.$modulospk, '=', 'mp.'.$modulospk)
-				->leftJoin($permisostbl.' AS p', 'p.'.$permisospk, '=', 'mp.'.$permisospk)
-				->where('m.'.$modulosname, $modulo)
-				->where('p.'.$permisosname, $permiso)
-				->where('rmp.'.$colrolid, $ur)
-				->pluck($rmppk);
+        if ($modulo == '') {
+            $response['error']  = Config::get('cancerbero::errorenrutas');
+            $response['acceso'] = false;
 
-			if($rolmodulopermisoid <> ''){
-				$response['error']  = '';
-				$response['acceso'] = true;
-				return Response::json($response);
-			}
-		}
+            return Response::json($response);
+        }
 
-		$response['error']  = Config::get('cancerbero::accesodenegado');
-		$response['acceso'] = false;
-		return Response::json($response);
-	}
+        $modulostbl   = Config::get('cancerbero::modulos.tabla');
+        $permisostbl  = Config::get('cancerbero::permisos.tabla');
+        $mptabl       = Config::get('cancerbero::modulopermisos.tabla');
+        $modulospk    = Config::get('cancerbero::modulos.id');
+        $permisospk   = Config::get('cancerbero::permisos.id');
+        $modulosname  = Config::get('cancerbero::modulos.nombre');
+        $permisosname = Config::get('cancerbero::permisos.nombre');
+        $mppk         = Config::get('cancerbero::modulopermisos.id');
+        $rmppk        = Config::get('cancerbero::rolmodulopermisos.id');
+        $colrolid     = Config::get('cancerbero::rolidusuarios');
+        $urtabla      = Config::get('cancerbero::usuarioroles.tabla');
+        $urusuario    = Config::get('cancerbero::usuarioroles.usuarioid');
+        $urrol        = Config::get('cancerbero::usuarioroles.rolid');
 
-	public static function tienePermisosCrud($aModulo) {
-		$addjson = self::tienePermisos($aModulo.'.create', false);
-		if($addjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
-		$add     = $addjson->getData();
-		$add     = $add->acceso;
+        $usuarioroles = [];
+        if (Config::get('cancerbero::multiplesroles')) {
+            $usuarioroles = DB::table($urtabla)
+                ->where($urusuario, Auth::id())
+                ->lists($urrol);
+        } else {
+            $usuarioroles[] = Auth::user()->$colrolid;
+        }
 
-		$editjson = self::tienePermisos($aModulo.'.edit', false);
-		if($editjson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
-		$edit     = $editjson->getData();
-		$edit     = $edit->acceso;
+        foreach ($usuarioroles as $ur) {
+            $rolmodulopermisoid = DB::table(Config::get('cancerbero::rolmodulopermisos.tabla') . ' AS rmp')
+                ->leftJoin($mptabl . ' AS mp', 'mp.' . $mppk, '=', 'rmp.' . $mppk)
+                ->leftJoin($modulostbl . ' AS m', 'm.' . $modulospk, '=', 'mp.' . $modulospk)
+                ->leftJoin($permisostbl . ' AS p', 'p.' . $permisospk, '=', 'mp.' . $permisospk)
+                ->where('m.' . $modulosname, $modulo)
+                ->where('p.' . $permisosname, $permiso)
+                ->where('rmp.' . $colrolid, $ur)
+                ->pluck($rmppk);
 
-		$deletejson = self::tienePermisos($aModulo.'.destroy', false);
-		if($deletejson == null) return Redirect::guest(Config::get('cancerbero::rutalogin'));
-		$delete     = $deletejson->getData();
-		$delete     = $delete->acceso;
+            if ($rolmodulopermisoid != '') {
+                $response['error']  = '';
+                $response['acceso'] = true;
 
-		return array('add'=>$add, 'edit'=>$edit, 'delete'=>$delete);
-	}
+                return Response::json($response);
+            }
+        }
 
-	public static function isGod() {
-		$rolid = Config::get('cancerbero::roles.id');
-		if(Auth::user()->$rolid == Config::get('cancerbero::rolbackdoor'))
-			return true;
-		else
-			return false;
-	}
+        $response['error']  = Config::get('cancerbero::accesodenegado');
+        $response['acceso'] = false;
 
-	public static function getGodRol() {
-		return Config::get('cancerbero::rolbackdoor');
-	}
+        return Response::json($response);
+    }
+
+    public static function tienePermisosCrud($aModulo)
+    {
+        $addjson = self::tienePermisos($aModulo . '.create', false);
+        if ($addjson == null) {
+            return Redirect::guest(Config::get('cancerbero::rutalogin'));
+        }
+
+        $add = $addjson->getData();
+        $add = $add->acceso;
+
+        $editjson = self::tienePermisos($aModulo . '.edit', false);
+        if ($editjson == null) {
+            return Redirect::guest(Config::get('cancerbero::rutalogin'));
+        }
+
+        $edit = $editjson->getData();
+        $edit = $edit->acceso;
+
+        $deletejson = self::tienePermisos($aModulo . '.destroy', false);
+        if ($deletejson == null) {
+            return Redirect::guest(Config::get('cancerbero::rutalogin'));
+        }
+
+        $delete = $deletejson->getData();
+        $delete = $delete->acceso;
+
+        return ['add' => $add, 'edit' => $edit, 'delete' => $delete];
+    }
+
+    public static function isGod()
+    {
+        $rolid = Config::get('cancerbero::roles.id');
+        if (Auth::user()->$rolid == Config::get('cancerbero::rolbackdoor')) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public static function getGodRol()
+    {
+        return Config::get('cancerbero::rolbackdoor');
+    }
 }
