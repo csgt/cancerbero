@@ -5,11 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {
-    protected $guarded = ['id'];
-    public $timestamps = false;
+    public $timestamps    = false;
+    protected $primaryKey = 'name';
 
     public function parent()
     {
-        return $this->hasOne(self::class, 'parent_id');
+        return $this->hasOne(self::class, 'parent');
     }
 }
