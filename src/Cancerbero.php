@@ -2,7 +2,6 @@
 namespace Csgt\Cancerbero;
 
 use Auth;
-use App\Models\Auth\Permission;
 use App\Models\Auth\RoleModulePermission;
 
 class Cancerbero
@@ -14,34 +13,13 @@ class Cancerbero
             return false;
         }
 
-        $roleIds    = Auth::user()->roleIds();
-        $routeArray = collect(explode('.', $aRouteName));
-
-        $permissionName = $routeArray->last();
-
-        $p = Permission::where('name', $permissionName)->first();
-        if (!$p) {
-            return false;
-        }
-
-        $ps = Permission::where('id', $p->id)->orWhere('id', $p->parent_id)->pluck('id');
-
-        $moduleName = implode('.', $routeArray->take($routeArray->count() - 1)->toArray());
-
-        $roleModulePermission = RoleModulePermission::select('id')
-            ->whereHas('role', function ($query) use ($roleIds) {
-                $query->whereIn('id', $roleIds);
-            })
-            ->whereHas('module_permission.module', function ($query) use ($moduleName) {
-                $query->where('name', $moduleName);
-            })
-            ->whereHas('module_permission.permission', function ($query) use ($ps) {
-                $query->whereIn('id', $ps);
-            })
+        $roleIds              = Auth::user()->roleIds();
+        $roleModulePermission = RoleModulePermission::query()
+            ->whereIn('role_id', $roleIds)
+            ->where('module_permission', $aRouteName)
             ->first();
 
         return ($roleModulePermission ? true : false);
-
     }
 
     public static function crudPermissions($aModule)
