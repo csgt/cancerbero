@@ -17,15 +17,15 @@ _WARNING: Roles will be reset to defaults. You need to specify permissions again
 "csgt/utils": "^8.0",
 ```
 
-1. Publish and run migrations
+2. Publish and run migrations
 
 ```
 php artisan vendor:publish --tag=migrations
 php artisan migrate
 ```
 
-1. Modify `PermissionSeeder`, `ModulePermissionsSeeder`, `MenuSeeder`, `GodSeeder`, `InitialSeeder` seeders for new schema. You may copy them from
+3. Modify `PermissionSeeder`, `ModulePermissionsSeeder`, `MenuSeeder`, `GodSeeder`, `InitialSeeder` seeders for new schema. You may copy them from
    `\packages\ui\src\Auth\stubs\seeders\`
 
-1. Update `\database\seeds\CsgtModule.php` for new schema. You may copy it from
+4. Update `\database\seeds\CsgtModule.php` for new schema. You may copy it from
    `\packages\cancerbero\src\`
