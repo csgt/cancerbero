@@ -7,4 +7,5 @@ class Module extends Model
 {
     public $timestamps    = false;
     protected $primaryKey = 'name';
+    public $incrementing  = false;
 }
