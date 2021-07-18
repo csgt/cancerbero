@@ -29,3 +29,5 @@ php artisan migrate
 
 4. Update `\database\seeds\CsgtModule.php` for new schema. You may copy it from
    `\packages\cancerbero\src\`
+
+5. Remove `menu` middleware from routes (if they exist)
