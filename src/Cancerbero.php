@@ -11,12 +11,10 @@ class Cancerbero
     public static function can($aRuta)
     {
         return self::tienePermisos($aRuta, false, true);
-
     }
 
     public static function tienePermisos($aRuta, $aRedirect = true, $aSimple = false)
     {
-        // dd(Auth::guest(), $aRedirect);
         if (Auth::guest()) {
             if ($aRedirect === true) {
                 return redirect()->guest(config('csgtcancerbero.rutalogin'));
@@ -36,7 +34,7 @@ class Cancerbero
             $permiso = $arr[count($arr) - 1];
             array_pop($arr);
             $modulo = implode('.', $arr);
-        } elseif (count($arr == 1)) {
+        } elseif (count($arr) == 1) {
             $modulo = $arr[0];
         }
 
@@ -125,7 +123,14 @@ class Cancerbero
             $delete = $deletejson->getData()->acceso;
         }
 
-        return ['add' => $add, 'edit' => $edit, 'delete' => $delete];
+        return [
+            'add'     => $add,
+            'edit'    => $edit,
+            'delete'  => $delete,
+            'create'  => $add,
+            'update'  => $edit,
+            'destroy' => $delete,
+        ];
     }
 
     public static function isGod()
