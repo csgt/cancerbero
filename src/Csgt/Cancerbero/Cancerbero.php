@@ -9,7 +9,6 @@ use Response;
 
 class Cancerbero
 {
-
     public static function can($aRouteName)
     {
         $res = self::tienePermisos($aRouteName, false);
@@ -22,7 +21,6 @@ class Cancerbero
 
     public static function tienePermisos($aRuta, $aRedirect = true)
     {
-
         if (Auth::guest()) {
             if ($aRedirect) {
                 return Redirect::guest(Config::get('cancerbero::rutalogin'));
@@ -40,7 +38,7 @@ class Cancerbero
             $permiso = $arr[count($arr) - 1];
             array_pop($arr);
             $modulo = implode('.', $arr);
-        } elseif (count($arr == 1)) {
+        } elseif (count($arr) == 1) {
             $modulo = $arr[0];
         }
 
@@ -135,7 +133,6 @@ class Cancerbero
         } else {
             return false;
         }
-
     }
 
     public static function getGodRol()
