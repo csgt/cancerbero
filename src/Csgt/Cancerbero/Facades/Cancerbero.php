@@ -1,8 +1,11 @@
-<?php namespace namespace Csgt\Cancerbero\Facades;
- 
+<?php
+namespace Csgt\Cancerbero\Facades;
+
 use Illuminate\Support\Facades\Facade;
- 
-class Cancerbero extends Facade {
-  protected static function getFacadeAccessor() { return 'cancerbero'; }
- 
+
+class Cancerbero extends Facade
+{
+    protected static function getFacadeAccessor()
+    {return 'cancerbero';}
+
 }
