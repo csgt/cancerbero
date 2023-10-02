@@ -30,7 +30,7 @@ class AddNamesToCancerbero extends Migration
             $table->string('module_permission')->after('role_id');
         });
 
-        DB::unparepared("UPDATE role_module_permissions rmp SET rmp.module_permission = (SELECT name FROM module_permissions WHERE id=rmp.module_permission_id)");
+        DB::unprepared("UPDATE role_module_permissions rmp SET rmp.module_permission = (SELECT name FROM module_permissions WHERE id=rmp.module_permission_id)");
 
         if (Schema::hasColumn('menus', 'module_permission_id')) {
             Schema::table('menus', function (Blueprint $table) {
@@ -54,8 +54,8 @@ class AddNamesToCancerbero extends Migration
         Schema::table('role_module_permissions', function (Blueprint $table) {
             $table->dropForeign(['module_permission_id']);
             $table->dropForeign(['role_id']);
-            $table->dropColumn('module_permission_id');
             $table->dropUnique(['role_id', 'module_permission_id']);
+            $table->dropColumn('module_permission_id');
         });
 
         Schema::table('role_module_permissions', function (Blueprint $table) {
