@@ -1,24 +1,31 @@
 {
     "name": "csgt/cancerbero",
-    "description": "",
+    "description": "Cancerbero",
     "authors": [
         {
-            "name": "CS",
-            "email": "info@cs.com.gt"
+            "name": "Softlogic",
+            "email": "software@softlogic.com.gt"
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "4.2.*"
+        "php": ">=7.2"
     },
     "autoload": {
         "classmap": [
-            "src/controllers",
-            "src/database/seeds"
+            "src/Http/Middleware"
         ],
-        "psr-0": {
-            "Csgt\\Cancerbero\\": "src/"
+        "psr-4": {
+            "Csgt\\Cancerbero\\": "src"
         }
     },
-    "minimum-stability": "stable"
+    "autoload-dev": {
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Csgt\\Cancerbero\\CancerberoServiceProvider"
+            ]
+        }
+    }
 }

@@ -1,0 +1,9 @@
+<?php
+namespace {{namespace}}Models\Auth;
+
+use Csgt\Cancerbero\Models\UserRole as CsgtUserRole;
+
+class UserRole extends CsgtUserRole
+{
+
+}
