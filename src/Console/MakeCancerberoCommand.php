@@ -17,17 +17,17 @@ class MakeCancerberoCommand extends Command
     protected $langs = [];
 
     protected $directories = [
-        'app/Models/Auth',
+        'app/Models',
     ];
 
     protected $models = [
-        'Auth/User',
-        'Auth/Module',
-        'Auth/ModulePermission',
-        'Auth/Permission',
-        'Auth/Role',
-        'Auth/RoleModulePermission',
-        'Auth/UserRole',
+        'User',
+        'Module',
+        'ModulePermission',
+        'Permission',
+        'Role',
+        'RoleModulePermission',
+        'UserRole',
     ];
 
     public function handle()

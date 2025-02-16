@@ -1,5 +1,5 @@
 <?php
-namespace {{namespace}}Models\Auth;
+namespace {{namespace}}Models;
 
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\ResetPasswordNotification;
