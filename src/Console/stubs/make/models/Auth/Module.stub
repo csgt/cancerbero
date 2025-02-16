@@ -1,5 +1,5 @@
 <?php
-namespace {{namespace}}Models\Auth;
+namespace {{namespace}}Models;
 
 use Csgt\Cancerbero\Models\Module as CsgtModule;
 

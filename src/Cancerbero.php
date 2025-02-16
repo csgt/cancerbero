@@ -2,7 +2,7 @@
 namespace Csgt\Cancerbero;
 
 use Auth;
-use App\Models\Auth\RoleModulePermission;
+use App\Models\RoleModulePermission;
 
 class Cancerbero
 {

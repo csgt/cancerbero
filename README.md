@@ -2,6 +2,11 @@
 
 Cancerbero is a Laravel package to manage access control based on routes and a permissions database table.
 
+| Package Version | Model path  | DB Structure |
+| --------------- | ----------- | ------------ |
+| 7.0             | Models/Auth | names        |
+| 8.0             | Models      | names        |
+
 ## Upgrade guides
 
 ### 6.x -> 7.x
