@@ -1,19 +1,27 @@
-<?php 
+<?php
 namespace Csgt\Cancerbero\Http\Middleware;
 
-use Closure, Auth, Cancerbero, Route;
+use Auth;
+use Route;
+use Closure;
+use Cancerbero;
 
-class CancerberoMW {
-  public function handle($request, Closure $next) {
-    $rolid = config('csgtcancerbero.rolidusuarios');
-	  if (Auth::guest()) return redirect()->guest(config('csgtcancerbero.rutalogin'));
-	  
-	  $resultjson = Cancerbero::tienePermisos(Route::currentRouteName());
-	  $result     = $resultjson->getData();
+class CancerberoMW
+{
+    public function handle($request, Closure $next)
+    {
+        $rolid = config('csgtcancerbero.rolidusuarios');
+        if (Auth::guest()) {
+            return redirect()->guest(config('csgtcancerbero.rutalogin'));
+        }
 
-	  if(!$result->acceso) {
-	  	abort(401, $result->error . ' (' . Route::currentRouteName() . ')');
-	  }
-	  return $next($request);
-	}
+        $resultjson = Cancerbero::tienePermisos(Route::currentRouteName());
+        $result     = $resultjson->getData();
+
+        if (!$result->acceso) {
+            abort(401, $result->error . ' (' . Route::currentRouteName() . ')');
+        }
+
+        return $next($request);
+    }
 }
