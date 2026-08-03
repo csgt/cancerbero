@@ -61,9 +61,7 @@ class Cancerbero
 
         $usuarioroles = [];
         if (config('csgtcancerbero.multiplesroles') == true) {
-            $usuarioroles = DB::table($urtabla)
-                ->where($urusuario, Auth::id())
-                ->pluck($urrol);
+            $usuarioroles = self::getUserRoles($urtabla, $urusuario, $urrol);
         } else {
             $usuarioroles[] = Auth::user()->$colrolid;
         }
@@ -141,10 +139,7 @@ class Cancerbero
                 $urusuario = config('csgtcancerbero.usuarioroles.usuarioid');
                 $urrol     = config('csgtcancerbero.usuarioroles.rolid');
 
-                $usuarioroles = DB::table($urtabla)
-                    ->where($urusuario, Auth::id())
-                    ->pluck($urrol)
-                    ->toArray();
+                $usuarioroles = self::getUserRoles($urtabla, $urusuario, $urrol);
                 if (in_array($rolbackdoor, $usuarioroles)) {
                     return true;
                 } else {
@@ -168,5 +163,32 @@ class Cancerbero
     public static function getGodRol()
     {
         return config('csgtcancerbero.rolbackdoor');
+    }
+
+    /**
+     * Obtiene los roles de un usuario como arreglo sin depender de lists() o pluck().
+     *
+     * lists() fue removido en Laravel moderno y pluck() no devuelve el mismo tipo en
+     * todas las versiones soportadas. select() y get() mantienen este comportamiento
+     * desde Laravel 5.5 hasta Laravel 11.
+     *
+     * @param string $tabla
+     * @param string $columnaUsuario
+     * @param string $columnaRol
+     * @return array
+     */
+    private static function getUserRoles($tabla, $columnaUsuario, $columnaRol)
+    {
+        $roles = DB::table($tabla)
+            ->where($columnaUsuario, Auth::id())
+            ->select($columnaRol . ' as cancerbero_role_id')
+            ->get();
+
+        $resultado = [];
+        foreach ($roles as $rol) {
+            $resultado[] = $rol->cancerbero_role_id;
+        }
+
+        return $resultado;
     }
 }
