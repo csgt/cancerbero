@@ -1,7 +1,11 @@
 <?php 
 namespace Csgt\Cancerbero\Http\Middleware;
 
-use Closure, Auth, Cancerbero, Route;
+use Closure;
+use Csgt\Cancerbero\Cancerbero;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
 
 class CancerberoMW {
   public function handle($request, Closure $next) {

@@ -1,4 +1,4 @@
-@extends('template/template')
+@extends(config('csgtcancerbero.template', 'template.template'))
 
 @section('content')
 	<style>
