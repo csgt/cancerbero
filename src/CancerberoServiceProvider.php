@@ -12,13 +12,9 @@ class CancerberoServiceProvider extends ServiceProvider {
     $this->mergeConfigFrom(__DIR__ . '/config/csgtcancerbero.php', 'csgtcancerbero');
     $this->loadViewsFrom(__DIR__ . '/resources/views/','csgtcancerbero');
 
-    if (!$this->app->routesAreCached()) {
-      require __DIR__.'/Http/routes.php';
-    }
-
     AliasLoader::getInstance()->alias('Cancerbero','Csgt\Cancerbero\Cancerbero');
 
-    $router->middleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
+    $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
 
     $this->publishes([
         __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
@@ -29,7 +25,7 @@ class CancerberoServiceProvider extends ServiceProvider {
 	}
 
 	public function register() {
-		$this->app['cancerbero'] = $this->app->share(function($app) {
+		$this->app->singleton('cancerbero', function($app) {
     	return new Cancerbero;
   	});
 	}

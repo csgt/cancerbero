@@ -1,11 +1,10 @@
 <?php
 namespace Csgt\Cancerbero;
 
-use DB;
-use Auth;
-use Config;
-use Redirect;
-use Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 
 class Cancerbero
 {
@@ -35,7 +34,7 @@ class Cancerbero
             $permiso = $arr[count($arr) - 1];
             array_pop($arr);
             $modulo = implode('.', $arr);
-        } elseif (count($arr == 1)) {
+        } elseif (count($arr) == 1) {
             $modulo = $arr[0];
         }
 
@@ -64,7 +63,7 @@ class Cancerbero
         if (config('csgtcancerbero.multiplesroles') == true) {
             $usuarioroles = DB::table($urtabla)
                 ->where($urusuario, Auth::id())
-                ->lists($urrol);
+                ->pluck($urrol);
         } else {
             $usuarioroles[] = Auth::user()->$colrolid;
         }
@@ -144,7 +143,8 @@ class Cancerbero
 
                 $usuarioroles = DB::table($urtabla)
                     ->where($urusuario, Auth::id())
-                    ->lists($urrol);
+                    ->pluck($urrol)
+                    ->toArray();
                 if (in_array($rolbackdoor, $usuarioroles)) {
                     return true;
                 } else {

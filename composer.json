@@ -8,17 +8,23 @@
     }
   ],
   "require": {
-    "illuminate/support": "~5.1",
-    "php" : ">=5.3.0"
+    "illuminate/support": "~5.5|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+    "php" : ">=7.0.0"
   },
   "autoload": {
     "classmap": [
-      "src/Http/Controllers",
       "src/Http/Middleware"
     ],
     "psr-4": {
       "Csgt\\Cancerbero\\": "src"
     }
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Csgt\\Cancerbero\\CancerberoServiceProvider"
+      ]
+    }
+  }
 }
