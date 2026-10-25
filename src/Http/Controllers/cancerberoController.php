@@ -1,6 +1,8 @@
 <?php namespace Csgt\Cancerbero\Http\Controllers;
 
-use Illuminate\Routing\Controller, View, Auth, Redirect, Config, Input, DB, Crypt, Exception;
+use Illuminate\Routing\Controller, View, Auth, Redirect, Config, DB, Crypt, Exception;
+use Illuminate\Http\Request;
+use Csgt\Cancerbero\Support\QueryCompatibility;
 
 class cancerberoController extends Controller {
 	public function show($id) {
@@ -47,9 +49,10 @@ class cancerberoController extends Controller {
 					'roles.' . config('csgtcancerbero.roles.nombre') . ' AS rol')
 			->where('rmp.' . config('csgtcancerbero.rolmodulopermisos.rolid'), $id)
 			->get();
-		$nombrerol = DB::table(config('csgtcancerbero.roles.tabla'))
-			->where('rolid', $id)
-			->pluck(config('csgtcancerbero.roles.nombre'));
+		$nombrerol = QueryCompatibility::value(
+			DB::table(config('csgtcancerbero.roles.tabla'))->where('rolid', $id),
+			config('csgtcancerbero.roles.nombre')
+		);
 
 		foreach($rolmodulopermisos as $rmp)
 			$rolmodulopermisosarray[] = $rmp->modulopermiso;
@@ -62,10 +65,10 @@ class cancerberoController extends Controller {
 			->with('rolmodulopermisos', $rolmodulopermisosarray);
 	}
 
-	public function store() {
+	public function store(Request $request) {
 		try {
-			$rolid = Crypt::decrypt(Input::get('id'));
-			$modulopermisos = Input::get('modulopermisos');
+			$rolid = Crypt::decrypt($request->input('id'));
+			$modulopermisos = $request->input('modulopermisos');
 
 			DB::table(config('csgtcancerbero.rolmodulopermisos.tabla'))
 				->where(config('csgtcancerbero.rolmodulopermisos.rolid'), $rolid)

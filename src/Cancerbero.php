@@ -6,6 +6,7 @@ use Auth;
 use Config;
 use Redirect;
 use Response;
+use Csgt\Cancerbero\Support\QueryCompatibility;
 
 class Cancerbero
 {
@@ -35,7 +36,7 @@ class Cancerbero
             $permiso = $arr[count($arr) - 1];
             array_pop($arr);
             $modulo = implode('.', $arr);
-        } elseif (count($arr == 1)) {
+        } elseif (count($arr) == 1) {
             $modulo = $arr[0];
         }
 
@@ -62,22 +63,25 @@ class Cancerbero
 
         $usuarioroles = [];
         if (config('csgtcancerbero.multiplesroles') == true) {
-            $usuarioroles = DB::table($urtabla)
-                ->where($urusuario, Auth::id())
-                ->lists($urrol);
+            $usuarioroles = QueryCompatibility::column(
+                DB::table($urtabla)->where($urusuario, Auth::id()),
+                $urrol
+            );
         } else {
             $usuarioroles[] = Auth::user()->$colrolid;
         }
 
         foreach ($usuarioroles as $ur) {
-            $rolmodulopermisoid = DB::table(config('csgtcancerbero.rolmodulopermisos.tabla') . ' AS rmp')
+            $rolmodulopermisoid = QueryCompatibility::value(
+                DB::table(config('csgtcancerbero.rolmodulopermisos.tabla') . ' AS rmp')
                 ->leftJoin($mptabl . ' AS mp', 'mp.' . $mppk, '=', 'rmp.' . $mppk)
                 ->leftJoin($modulostbl . ' AS m', 'm.' . $modulospk, '=', 'mp.' . $modulospk)
                 ->leftJoin($permisostbl . ' AS p', 'p.' . $permisospk, '=', 'mp.' . $permisospk)
                 ->where('m.' . $modulosname, $modulo)
                 ->where('p.' . $permisosname, $permiso)
-                ->where('rmp.' . $colrolid, $ur)
-                ->pluck($rmppk);
+                ->where('rmp.' . $colrolid, $ur),
+                $rmppk
+            );
 
             if ($rolmodulopermisoid != '') {
                 if ($aJson) {
@@ -142,9 +146,10 @@ class Cancerbero
                 $urusuario = config('csgtcancerbero.usuarioroles.usuarioid');
                 $urrol     = config('csgtcancerbero.usuarioroles.rolid');
 
-                $usuarioroles = DB::table($urtabla)
-                    ->where($urusuario, Auth::id())
-                    ->lists($urrol);
+                $usuarioroles = QueryCompatibility::column(
+                    DB::table($urtabla)->where($urusuario, Auth::id()),
+                    $urrol
+                );
                 if (in_array($rolbackdoor, $usuarioroles)) {
                     return true;
                 } else {

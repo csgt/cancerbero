@@ -18,7 +18,11 @@ class CancerberoServiceProvider extends ServiceProvider {
 
     AliasLoader::getInstance()->alias('Cancerbero','Csgt\Cancerbero\Cancerbero');
 
-    $router->middleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
+    if (method_exists($router, 'aliasMiddleware')) {
+      $router->aliasMiddleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
+    } else {
+      $router->middleware('cancerbero', '\Csgt\Cancerbero\Http\Middleware\CancerberoMW');
+    }
 
     $this->publishes([
         __DIR__.'/database/migrations' => $this->app->databasePath() . '/migrations',
@@ -29,7 +33,7 @@ class CancerberoServiceProvider extends ServiceProvider {
 	}
 
 	public function register() {
-		$this->app['cancerbero'] = $this->app->share(function($app) {
+		$this->app->singleton('cancerbero', function($app) {
     	return new Cancerbero;
   	});
 	}
